@@ -2,8 +2,12 @@ import express from 'express';
 import 'dotenv/config';
 
 import knex from './database';
+import routes from './routes';
 
 const app = express();
+
+app.use(express.json());
+app.use(routes);
 
 app.get('/', (request, response) => {
   return response.json({ message: 'Siga API' });
@@ -22,5 +26,5 @@ app.get('/test', async (request, response) => {
 });
 
 app.listen(process.env.API_PORT, () => {
-  console.log(`Server started on port ${process.env.API_PORT} 🚀`);
+  console.log(`Servidor iniciado na porta ${process.env.API_PORT} 🚀`);
 });
