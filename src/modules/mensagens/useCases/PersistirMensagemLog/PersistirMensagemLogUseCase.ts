@@ -1,5 +1,6 @@
 import knex from '../../../../database';
 import AppError from '../../../../errors/AppError';
+import inserirApostrofo from '../../../../util/inserirApostrofo';
 import obterEmpresaPorCodigoOperadora from '../../../../util/obterEmpresaPorCodigoOperadora';
 import obterOwnerPorEmpresaOperadora from '../../../../util/obterOwnerPorCodigoOperadora';
 
@@ -66,19 +67,19 @@ class PersistirMensagemLogUseCase {
     ) VALUES (
       '${empresa}',
       '${canal}',
-      '${sessao}',
+      ${sessao ? inserirApostrofo(sessao) : null},
       '${telefone}',
-      '${dataEnvio}',
+      TO_TIMESTAMP_TZ('${dataEnvio}', 'YYYY-MM-DD"t"HH24:MI:SS.FF7TZR'),
       '${idEnvio}',
       '${mensagemEnviada}',
       '${tipoSolicitacao}',
-      '${codigoServico}',
-      '${codigoNota}',
+      ${codigoServico ? inserirApostrofo(codigoServico) : null},
+      ${codigoNota ? inserirApostrofo(codigoNota) : null},
       '${contaContrato}',
-      '${status}',
+      ${status ? inserirApostrofo(status) : null},
       '${categoria}',
-      '${usuario}',
-      '${dataNota}'
+      ${usuario ? inserirApostrofo(usuario) : null},
+      ${dataNota ? `TO_DATE('${dataNota}', 'DD/MM/YYYY')` : null}
     )`;
 
     await knex.raw(query);

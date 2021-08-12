@@ -19,6 +19,12 @@ class BuscarSolicitacoesController {
         telefone,
       });
 
+      if (!solicitacoes.length) {
+        return response
+          .status(204)
+          .json({ message: 'A conta contrato não possui solicitações' });
+      }
+
       return response.json(solicitacoes);
     } catch (err) {
       return response.json({ error: err.message });

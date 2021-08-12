@@ -37,7 +37,7 @@ class BuscarSolicitacoesUseCase {
       query += ` AND TELEFONE = ${telefone}`;
     }
 
-    const solicitacoes = await knex.raw(query);
+    const solicitacoes: Solicitacao[] = await knex.raw(query);
 
     return solicitacoes;
   }
