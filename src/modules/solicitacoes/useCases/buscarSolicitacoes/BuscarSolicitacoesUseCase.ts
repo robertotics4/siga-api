@@ -7,6 +7,7 @@ interface IRequest {
   empresaOperadora: number;
   contaContrato: string;
   codigoNota?: string;
+  telefone?: string;
 }
 
 class BuscarSolicitacoesUseCase {
@@ -14,6 +15,7 @@ class BuscarSolicitacoesUseCase {
     empresaOperadora,
     contaContrato,
     codigoNota,
+    telefone,
   }: IRequest): Promise<Solicitacao[]> {
     const owner = obterOwnerPorEmpresaOperadora(Number(empresaOperadora));
 
@@ -25,11 +27,17 @@ class BuscarSolicitacoesUseCase {
       throw new AppError('A conta contrato é obrigatória', 400);
     }
 
-    const query = `SELECT * FROM ${owner}.CLARA_SOLICITACOES WHERE CONTA_CONTRATO = ${contaContrato}`;
+    let query = `SELECT * FROM ${owner}.CLARA_SOLICITACOES WHERE CONTA_CONTRATO = ${contaContrato}`;
 
-    const solicitacoes = await knex.raw(
-      codigoNota ? `${query} AND CODIGO_NOTA = ${codigoNota}` : query,
-    );
+    if (codigoNota) {
+      query += ` AND CODIGO_NOTA = ${codigoNota}`;
+    }
+
+    if (telefone) {
+      query += ` AND TELEFONE = ${telefone}`;
+    }
+
+    const solicitacoes = await knex.raw(query);
 
     return solicitacoes;
   }
