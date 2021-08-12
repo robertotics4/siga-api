@@ -3,9 +3,9 @@ import express from 'express';
 const app = express();
 
 app.get('/', (request, response) => {
-  return response.json({ message: 'Hello World! '});
+  return response.json({ message: 'Siga API' });
 });
 
 app.listen(3333, () => {
-  console.log('Server started on PORT 3333 🚀');
+  console.log('Server started on port 3333 🚀');
 });
