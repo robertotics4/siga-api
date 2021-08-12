@@ -1,5 +1,3 @@
-import { parseISO, format } from 'date-fns';
-
 import knex from '../../../../database';
 import AppError from '../../../../errors/AppError';
 import inserirApostrofo from '../../../../util/inserirApostrofo';
