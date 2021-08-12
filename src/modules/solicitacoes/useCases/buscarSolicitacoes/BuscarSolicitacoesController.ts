@@ -7,13 +7,13 @@ class BuscarSolicitacoesController {
 
   async handle(request: Request, response: Response): Promise<Response> {
     try {
-      const empresaOperadora = request.query.empresaOperadora as string;
+      const empresaOperadora = Number(request.query.empresaOperadora);
       const contaContrato = request.query.contaContrato as string;
       const codigoNota = request.query.codigoNota as string;
       const telefone = request.query.telefone as string;
 
       const solicitacoes = await this.buscarSolicitacoesUseCase.execute({
-        empresaOperadora: Number(empresaOperadora),
+        empresaOperadora,
         contaContrato,
         codigoNota,
         telefone,

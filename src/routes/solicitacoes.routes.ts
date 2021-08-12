@@ -4,7 +4,7 @@ import buscarSolicitacoesController from '../modules/solicitacoes/useCases/busca
 
 const solicitacoesRotas = Router();
 
-solicitacoesRotas.get('/solicitacoes', async (request, response) => {
+solicitacoesRotas.get('/', async (request, response) => {
   return buscarSolicitacoesController.handle(request, response);
 });
 

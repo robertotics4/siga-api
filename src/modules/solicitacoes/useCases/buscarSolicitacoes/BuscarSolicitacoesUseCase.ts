@@ -1,6 +1,6 @@
 import knex from '../../../../database';
 import AppError from '../../../../errors/AppError';
-import obterOwnerPorEmpresaOperadora from '../../../../util/obterOwnerPorEmpresaOperadora';
+import obterOwnerPorEmpresaOperadora from '../../../../util/obterOwnerPorCodigoOperadora';
 import Solicitacao from '../../entities/Solicitacao';
 
 interface IRequest {
@@ -17,7 +17,7 @@ class BuscarSolicitacoesUseCase {
     codigoNota,
     telefone,
   }: IRequest): Promise<Solicitacao[]> {
-    const owner = obterOwnerPorEmpresaOperadora(Number(empresaOperadora));
+    const owner = obterOwnerPorEmpresaOperadora(empresaOperadora);
 
     if (!owner) {
       throw new AppError('Empresa operadora inválida', 400);

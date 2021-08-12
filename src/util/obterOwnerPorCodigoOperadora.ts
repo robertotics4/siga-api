@@ -1,5 +1,7 @@
-function obterOwnerPorEmpresaOperadora(codigo: number): string | undefined {
-  switch (codigo) {
+function obterOwnerPorCodigoOperadora(
+  codigoOperadora: number,
+): string | undefined {
+  switch (codigoOperadora) {
     case 98:
       return 'OWDINCMR';
     case 95:
@@ -13,4 +15,4 @@ function obterOwnerPorEmpresaOperadora(codigo: number): string | undefined {
   }
 }
 
-export default obterOwnerPorEmpresaOperadora;
+export default obterOwnerPorCodigoOperadora;
