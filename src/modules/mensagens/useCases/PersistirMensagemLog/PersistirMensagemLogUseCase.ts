@@ -1,3 +1,5 @@
+import { parseISO, format } from 'date-fns';
+
 import knex from '../../../../database';
 import AppError from '../../../../errors/AppError';
 import inserirApostrofo from '../../../../util/inserirApostrofo';
@@ -47,6 +49,8 @@ class PersistirMensagemLogUseCase {
     }
 
     const empresa = obterEmpresaPorCodigoOperadora(empresaOperadora);
+
+    console.log(new Date(dataEnvio));
 
     const query = `INSERT INTO ${owner}.CLARA_MSG_SAIDA_ENVIADA (
       EMPRESA,
