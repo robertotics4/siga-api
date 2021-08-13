@@ -294,7 +294,9 @@
                   },
                   "dataNota": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "date",
+                    "pattern": "/([0-9]{2})\/(?:[0-9]{2})\/([0-9]{4})/",
+                    "example": "13/08/2021"
                   }
                 }
               }
