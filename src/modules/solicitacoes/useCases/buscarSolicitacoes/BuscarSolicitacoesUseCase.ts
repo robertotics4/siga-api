@@ -48,7 +48,7 @@ class BuscarSolicitacoesUseCase {
     solicitacoes.forEach(solicitacao => {
       Object.assign(solicitacao, {
         ...solicitacao,
-        sessaoAtiva: verificarSessaoAtiva(solicitacao.dataSolicitacao),
+        SESSAO_ATIVA: verificarSessaoAtiva(solicitacao.dataSolicitacao),
       });
     });
 

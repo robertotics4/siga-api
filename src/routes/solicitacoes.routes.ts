@@ -9,7 +9,7 @@ solicitacoesRotas.get(
   '/',
   celebrate({
     [Segments.QUERY]: {
-      empresaOperadora: Joi.number().required().min(11).max(99),
+      empresaOperadora: Joi.number().required().valid(82, 86, 95, 98),
       contaContrato: Joi.string()
         .required()
         .pattern(new RegExp(/^[0-9.]+$/))

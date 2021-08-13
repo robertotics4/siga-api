@@ -1,0 +1,189 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Clara Mensagens/Solicitações - Documentação",
+    "description": "API auxiliar para o projeto SIGA",
+    "version": "1.0.0",
+    "contact": {
+      "email": "roberto.oliveira@nepen.org.br"
+    }
+  },
+  "paths": {
+    "/solicitacoes": {
+      "get": {
+        "tags": [
+          "Solicitação"
+        ],
+        "summary": "Buscar solicitações",
+        "description": "Buscar solicitações pelo código da nota ou telefone",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "empresaOperadora",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "enum": [82, 86, 95, 98],
+              "example": 98
+            }
+          },
+          {
+            "in": "query",
+            "name": "contaContrato",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 12,
+              "example": "000012345678"
+            }
+          },
+          {
+            "in": "query",
+            "name": "codigoNota",
+            "schema": {
+              "type": "string",
+              "maxLength": 12,
+              "example": "001234567898"
+            }
+          },
+          {
+            "in": "query",
+            "name": "telefone",
+            "schema": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 11,
+              "example": "9899999999"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "DATA_SOLICITACAO": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "ID_CONVERSA": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "SESSAO": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "EMPRESA": {
+                        "type": "string",
+                        "example": "EQTL MA"
+                      },
+                      "CONTA_CONTRATO": {
+                        "type": "string",
+                        "example": "0000123456"
+                      },
+                      "TELEFONE": {
+                        "type": "string",
+                        "example": "9888888888"
+                      },
+                      "TELEFONE_9": {
+                        "type": "string",
+                        "example": "98988888888"
+                      },
+                      "CODIGO_SR": {
+                        "type": "string",
+                        "example": "8948392039"
+                      },
+                      "CODIGO_NOTA": {
+                        "type": "string",
+                        "example": "001345678987"
+                      },
+                      "CANAL": {
+                        "type": "string",
+                        "example": "whatsapp"
+                      },
+                      "REGIONAL": {
+                        "type": "string",
+                        "example": "LESTE"
+                      },
+                      "MUNICIPIO": {
+                        "type": "string",
+                        "example": "SAO LUIS"
+                      },
+                      "TIPO_SOLICITACAO": {
+                        "type": "string",
+                        "example": "Falta de Energia"
+                      },
+                      "TOTAL_SOLICITACOES": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "SESSAO_ATIVA": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição Inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": 400
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Bad Request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Validation failed"
+                    },
+                    "validation": {
+                      "type": "object",
+                      "properties": {
+                        "query": {
+                          "type": "object",
+                          "properties": {
+                            "source": {
+                              "type": "string",
+                              "example": "query"
+                            },
+                            "keys": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "empresaOperadora"
+                              }
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "\"empresaOperadora\" must be one of [82, 86, 95, 98]"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

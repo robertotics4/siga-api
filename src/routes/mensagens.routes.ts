@@ -9,7 +9,7 @@ mensagensRotas.post(
   '/',
   celebrate({
     [Segments.QUERY]: {
-      empresaOperadora: Joi.number().required().min(11).max(99),
+      empresaOperadora: Joi.number().required().valid(82, 86, 95, 98),
     },
     [Segments.BODY]: {
       canal: Joi.string().required(),
