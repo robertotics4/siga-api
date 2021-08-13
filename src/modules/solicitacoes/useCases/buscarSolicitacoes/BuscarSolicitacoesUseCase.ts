@@ -1,5 +1,6 @@
 import knex from '../../../../database';
 import AppError from '../../../../errors/AppError';
+import completarComZeros from '../../../../util/completarComZeros';
 import obterOwnerPorEmpresaOperadora from '../../../../util/obterOwnerPorCodigoOperadora';
 import Solicitacao from '../../entities/Solicitacao';
 
@@ -20,21 +21,25 @@ class BuscarSolicitacoesUseCase {
     const owner = obterOwnerPorEmpresaOperadora(empresaOperadora);
 
     if (!owner) {
-      throw new AppError('Empresa operadora inválida', 400);
+      throw new AppError('Empresa operadora inexistente');
     }
 
-    if (!contaContrato) {
-      throw new AppError('A conta contrato é obrigatória', 400);
-    }
-
-    let query = `SELECT * FROM ${owner}.CLARA_SOLICITACOES WHERE CONTA_CONTRATO = ${contaContrato}`;
+    let query = `SELECT * FROM ${owner}.CLARA_SOLICITACOES WHERE CONTA_CONTRATO = ${
+      contaContrato && completarComZeros(contaContrato, 12)
+    }`;
 
     if (codigoNota) {
-      query += ` AND CODIGO_NOTA = ${codigoNota}`;
+      query += ` AND CODIGO_NOTA = ${
+        codigoNota && completarComZeros(codigoNota, 12)
+      }`;
     }
 
     if (telefone) {
-      query += ` AND TELEFONE = ${telefone}`;
+      if (telefone.length === 10) {
+        query += ` AND TELEFONE = ${telefone}`;
+      } else if (telefone.length === 11) {
+        query += ` AND TELEFONE_9 = ${telefone}`;
+      }
     }
 
     const solicitacoes: Solicitacao[] = await knex.raw(query);

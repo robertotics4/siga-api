@@ -43,12 +43,10 @@ class PersistirMensagemLogUseCase {
     const owner = obterOwnerPorEmpresaOperadora(empresaOperadora);
 
     if (!owner) {
-      throw new AppError('Empresa operadora inválida', 400);
+      throw new AppError('Empresa operadora inexistente');
     }
 
     const empresa = obterEmpresaPorCodigoOperadora(empresaOperadora);
-
-    console.log(new Date(dataEnvio));
 
     const query = `INSERT INTO ${owner}.CLARA_MSG_SAIDA_ENVIADA (
       EMPRESA,
