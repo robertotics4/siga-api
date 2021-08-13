@@ -32,7 +32,9 @@ mensagensRotas.post(
         .pattern(new RegExp(/^[0-9.]+$/))
         .max(12),
       status: Joi.string(),
-      categoria: Joi.string().required(),
+      categoria: Joi.string()
+        .required()
+        .valid('PUSH', 'PUSH - ATIVO', 'SERVICO', 'SERVICO - ATIVO'),
       usuario: Joi.string(),
       dataNota: Joi.string(),
     },

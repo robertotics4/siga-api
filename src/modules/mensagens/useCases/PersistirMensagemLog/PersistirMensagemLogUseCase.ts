@@ -17,7 +17,7 @@ interface IRequest {
   codigoNota?: string;
   contaContrato: string;
   status?: string;
-  categoria: string;
+  categoria: 'PUSH' | 'PUSH - ATIVO' | 'SERVICO' | 'SERVICO - ATIVO';
   usuario?: string;
   dataNota?: string;
 }
