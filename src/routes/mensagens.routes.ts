@@ -5,7 +5,7 @@ import persistirMensagemLogController from '../modules/mensagens/useCases/Persis
 const mensagensRotas = Router();
 
 mensagensRotas.post('/', (request, response) => {
-  persistirMensagemLogController.handle(request, response);
+  return persistirMensagemLogController.handle(request, response);
 });
 
 export default mensagensRotas;

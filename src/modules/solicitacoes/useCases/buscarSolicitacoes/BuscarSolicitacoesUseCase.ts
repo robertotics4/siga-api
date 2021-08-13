@@ -2,6 +2,7 @@ import knex from '../../../../database';
 import AppError from '../../../../errors/AppError';
 import completarComZeros from '../../../../util/completarComZeros';
 import obterOwnerPorEmpresaOperadora from '../../../../util/obterOwnerPorCodigoOperadora';
+import verificarSessaoAtiva from '../../../../util/verificarSessaoAtiva';
 import Solicitacao from '../../entities/Solicitacao';
 
 interface IRequest {
@@ -43,6 +44,13 @@ class BuscarSolicitacoesUseCase {
     }
 
     const solicitacoes: Solicitacao[] = await knex.raw(query);
+
+    solicitacoes.forEach(solicitacao => {
+      Object.assign(solicitacao, {
+        ...solicitacao,
+        sessaoAtiva: verificarSessaoAtiva(solicitacao.dataSolicitacao),
+      });
+    });
 
     return solicitacoes;
   }
