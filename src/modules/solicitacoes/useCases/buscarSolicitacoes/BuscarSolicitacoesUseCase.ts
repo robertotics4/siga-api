@@ -1,6 +1,7 @@
 import knex from '../../../../database';
 import AppError from '../../../../errors/AppError';
 import completarComZeros from '../../../../util/completarComZeros';
+import formatarSolicitacao from '../../../../util/formatarSolicitacao';
 import obterOwnerPorEmpresaOperadora from '../../../../util/obterOwnerPorCodigoOperadora';
 import verificarSessaoAtiva from '../../../../util/verificarSessaoAtiva';
 import Solicitacao from '../../entities/Solicitacao';
@@ -10,6 +11,23 @@ interface IRequest {
   contaContrato: string;
   codigoNota?: string;
   telefone?: string;
+}
+
+export interface ISolicitacaoResponse {
+  DATA_SOLICITACAO: Date;
+  ID_CONVERSA: string;
+  SESSAO?: string;
+  EMPRESA: string;
+  CONTA_CONTRATO: string;
+  TELEFONE: string;
+  TELEFONE_9: string;
+  CODIGO_SR?: string;
+  CODIGO_NOTA?: string;
+  CANAL: string;
+  REGIONAL: string;
+  MUNICIPIO: string;
+  TIPO_SOLICITACAO: string;
+  TOTAL_SOLICITACOES: number;
 }
 
 class BuscarSolicitacoesUseCase {
@@ -43,16 +61,13 @@ class BuscarSolicitacoesUseCase {
       }
     }
 
-    const solicitacoes: Solicitacao[] = await knex.raw(query);
+    const solicitacoes: ISolicitacaoResponse[] = await knex.raw(query);
 
-    solicitacoes.forEach(solicitacao => {
-      Object.assign(solicitacao, {
-        ...solicitacao,
-        SESSAO_ATIVA: verificarSessaoAtiva(solicitacao.dataSolicitacao),
-      });
-    });
+    const solicitacoesFormatadas = solicitacoes.map(solicitacao =>
+      formatarSolicitacao(solicitacao),
+    );
 
-    return solicitacoes;
+    return solicitacoesFormatadas;
   }
 }
 
