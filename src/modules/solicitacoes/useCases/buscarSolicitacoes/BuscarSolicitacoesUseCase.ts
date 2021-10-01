@@ -61,6 +61,8 @@ class BuscarSolicitacoesUseCase {
       }
     }
 
+    query += ' ORDER BY DATA_SOLICITACAO DESC';
+
     const solicitacoes: ISolicitacaoResponse[] = await knex.raw(query);
 
     const solicitacoesFormatadas = solicitacoes.map(solicitacao =>
