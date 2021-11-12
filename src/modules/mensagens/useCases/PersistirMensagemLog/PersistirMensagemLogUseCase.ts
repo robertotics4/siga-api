@@ -43,7 +43,7 @@ class PersistirMensagemLogUseCase {
     const owner = obterOwnerPorEmpresaOperadora(empresaOperadora);
 
     if (!owner) {
-      throw new AppError('Empresa operadora inexistente');
+      throw new AppError('Código de empresa operadora inválido');
     }
 
     const empresa = obterEmpresaPorCodigoOperadora(empresaOperadora);

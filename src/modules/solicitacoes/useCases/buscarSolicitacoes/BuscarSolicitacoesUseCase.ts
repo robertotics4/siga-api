@@ -3,7 +3,6 @@ import AppError from '../../../../errors/AppError';
 import completarComZeros from '../../../../util/completarComZeros';
 import formatarSolicitacao from '../../../../util/formatarSolicitacao';
 import obterOwnerPorEmpresaOperadora from '../../../../util/obterOwnerPorCodigoOperadora';
-import verificarSessaoAtiva from '../../../../util/verificarSessaoAtiva';
 import Solicitacao from '../../entities/Solicitacao';
 
 interface IRequest {
@@ -40,7 +39,7 @@ class BuscarSolicitacoesUseCase {
     const owner = obterOwnerPorEmpresaOperadora(empresaOperadora);
 
     if (!owner) {
-      throw new AppError('Empresa operadora inexistente');
+      throw new AppError('Código de empresa operadora inválido');
     }
 
     let query = `SELECT * FROM ${owner}.CLARA_SOLICITACOES WHERE CONTA_CONTRATO = ${

@@ -1,3 +1,4 @@
+import { isCelebrateError } from 'celebrate';
 import { Request, Response, NextFunction } from 'express';
 
 import AppError from '../errors/AppError';
@@ -12,6 +13,17 @@ function errorHandler(
     return response.status(err.statusCode).json({
       status: 'error',
       message: err.message,
+    });
+  }
+
+  if (isCelebrateError(err)) {
+    const messages = [];
+
+    err.details.forEach(detail => messages.push(detail.message));
+
+    return response.status(400).json({
+      status: 'error',
+      message: messages,
     });
   }
 

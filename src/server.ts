@@ -1,4 +1,3 @@
-import { errors } from 'celebrate';
 import express, { Request, Response, NextFunction } from 'express';
 import 'dotenv/config';
 import 'express-async-errors';
@@ -13,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
 app.use(routes);
-app.use(errors());
+
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
     errorHandler(err, request, response, next);
