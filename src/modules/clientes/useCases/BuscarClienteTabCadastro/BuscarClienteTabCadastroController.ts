@@ -1,17 +1,18 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 
 import BuscarClienteTabCadastroUseCase from './BuscarClienteTabCadastroUseCase';
 
 class BuscarClienteTabCadastroController {
-  constructor(
-    private buscarClienteTabCadastroUseCase: BuscarClienteTabCadastroUseCase,
-  ) {}
-
   async handle(request: Request, response: Response): Promise<Response> {
     const empresaOperadora = Number(request.query.empresaOperadora) as number;
     const contaContrato = request.query.contaContrato as string;
 
-    const cliente = await this.buscarClienteTabCadastroUseCase.execute({
+    const buscarClienteTabCadastroUseCase = container.resolve(
+      BuscarClienteTabCadastroUseCase,
+    );
+
+    const cliente = await buscarClienteTabCadastroUseCase.execute({
       empresaOperadora,
       contaContrato,
     });

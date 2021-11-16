@@ -1,9 +1,12 @@
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 
-import buscarClienteTabCadastroController from '../modules/clientes/useCases/BuscarClienteTabCadastro';
+import BuscarClienteTabCadastroController from '../modules/clientes/useCases/BuscarClienteTabCadastro/BuscarClienteTabCadastroController';
 
 const clientesRotas = Router();
+
+const buscarClienteTabCadastroController =
+  new BuscarClienteTabCadastroController();
 
 clientesRotas.get(
   '/cadastro',
@@ -16,9 +19,7 @@ clientesRotas.get(
         .max(12),
     },
   }),
-  async (request, response) => {
-    return buscarClienteTabCadastroController.handle(request, response);
-  },
+  buscarClienteTabCadastroController.handle,
 );
 
 export default clientesRotas;
