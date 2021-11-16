@@ -1,44 +1,34 @@
-import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
+import { inject, injectable } from 'tsyringe';
 
 import AppError from '../../../../errors/AppError';
-import completarComZeros from '../../../../util/completarComZeros';
-import obterEmpresaPorCodigoOperadora from '../../../../util/obterEmpresaPorCodigoOperadora';
 import Cliente from '../../entities/Cliente';
+import IClientesAPIRepository from '../../repositories/IClientesAPIRepository';
 
 interface IRequest {
   empresaOperadora: number;
   contaContrato: string;
 }
 
+@injectable()
 class BuscarClienteAPIUseCase {
-  async execute({ empresaOperadora, contaContrato }: IRequest): Promise<void> {
-    const empresa = obterEmpresaPorCodigoOperadora(empresaOperadora);
-
-    if (!empresa) {
-      throw new AppError('Código de empresa operadora inválido');
-    }
-
-    if (!contaContrato) {
-      throw new AppError('A conta contrato é obrigatória');
-    }
-
-    const response = await axios.get(process.env.URL_API_CANAIS_DIGITAIS, {
-      params: {
-        empresaOperadora,
-        contrato: completarComZeros(contaContrato, 12),
-        codigoTransacao: uuidv4(),
-        flagDadosCliente: true,
-      },
+  constructor(
+    @inject('ClientesAPIRepository')
+    private clientesAPIRepository: IClientesAPIRepository,
+  ) {}
+  async execute({
+    empresaOperadora,
+    contaContrato,
+  }: IRequest): Promise<Cliente> {
+    const cliente = await this.clientesAPIRepository.buscarPorContaContrato({
+      empresaOperadora,
+      contaContrato,
     });
 
-    const responseClient = response.data.data.cliente[0];
+    if (!cliente) {
+      throw new AppError('Cliente não encontrado');
+    }
 
-    // const cliente = new Cliente({
-    //   contaContrato: responseClient.contaContrato,
-    //   nome: responseClient.nome + responseClient.sobrenome,
-    //   email: responseClient.
-    // });
+    return cliente;
   }
 }
 

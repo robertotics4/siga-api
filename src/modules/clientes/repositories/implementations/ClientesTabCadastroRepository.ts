@@ -1,8 +1,8 @@
 import knex from '../../../../database';
 import completarComZeros from '../../../../util/completarComZeros';
 import obterEmpresaPorCodigoOperadora from '../../../../util/obterEmpresaPorCodigoOperadora';
+import IBuscarPorContaContratoDTO from '../../../dtos/IBuscarPorContaContratoDTO';
 import Cliente from '../../entities/Cliente';
-import { IBuscarPorContaContratoDTO } from '../IClientesTabCadastroRepository';
 
 interface IClienteResponse {
   CONTA_CONTRATO: string;
@@ -18,7 +18,6 @@ class ClientesTabCadastroRepository {
     contaContrato,
   }: IBuscarPorContaContratoDTO): Promise<Cliente> {
     const empresa = obterEmpresaPorCodigoOperadora(empresaOperadora);
-    console.log(empresa);
 
     const query = `SELECT * FROM ${empresa}.TAB_CADASTRO WHERE CONTA_CONTRATO = ${completarComZeros(
       contaContrato,
@@ -31,12 +30,23 @@ class ClientesTabCadastroRepository {
       return undefined;
     }
 
+    const telFixos = [];
+    const telMoveis = [];
+
+    if (dadosCliente[0].TEL_FIXO !== undefined) {
+      telFixos.push(dadosCliente[0].TEL_FIXO.toString());
+    }
+
+    if (dadosCliente[0].TEL_MOVEL !== undefined) {
+      telMoveis.push(dadosCliente[0].TEL_MOVEL.toString());
+    }
+
     const cliente = new Cliente({
       contaContrato: dadosCliente[0].CONTA_CONTRATO,
       nome: dadosCliente[0].NOME,
       email: dadosCliente[0].EMAIL,
-      telefoneFixo: dadosCliente[0].TEL_FIXO,
-      telefoneMovel: dadosCliente[0].TEL_MOVEL,
+      telefoneFixo: telFixos,
+      telefoneMovel: telMoveis,
     });
 
     return cliente;

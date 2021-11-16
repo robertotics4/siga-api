@@ -1,11 +1,9 @@
 interface IClienteDTO {
   contaContrato: string;
   nome: string;
-  cpf?: string;
-  cnpj?: string;
   email?: string;
-  telefoneFixo?: string;
-  telefoneMovel?: string;
+  telefoneFixo?: string[];
+  telefoneMovel?: string[];
 }
 
 class Cliente {
@@ -23,9 +21,9 @@ class Cliente {
 
   email?: string;
 
-  telefoneFixo?: string;
+  telefoneFixo?: string[];
 
-  telefoneMovel?: string;
+  telefoneMovel?: string[];
 }
 
 export default Cliente;
