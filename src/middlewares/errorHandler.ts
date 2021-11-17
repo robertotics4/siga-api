@@ -22,13 +22,13 @@ function errorHandler(
     err.details.forEach(detail => messages.push(detail.message));
 
     return response.status(400).json({
-      status: 'error',
+      status: 'Validation error',
       message: messages,
     });
   }
 
   return response.status(500).json({
-    status: 'error',
+    status: 'Error',
     message: 'Internal server error',
   });
 }

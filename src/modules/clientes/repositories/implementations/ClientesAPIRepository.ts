@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import completarComZeros from '../../../../util/completarComZeros';
+import prepararStringContaContrato from '../../../../util/prepararStringContaContrato';
 import IBuscarPorContaContratoDTO from '../../../dtos/IBuscarPorContaContratoDTO';
 import Cliente from '../../entities/Cliente';
 
@@ -15,12 +15,17 @@ class ClientesAPIRepository {
     empresaOperadora,
     contaContrato,
   }: IBuscarPorContaContratoDTO): Promise<Cliente> {
+    const strContaContrato = prepararStringContaContrato(
+      empresaOperadora,
+      contaContrato,
+    );
+
     const response = await axios.get(
       `${process.env.URL_API_CANAIS_DIGITAIS}/atendimento/v1/clientes`,
       {
         params: {
           empresaOperadora,
-          contrato: completarComZeros(contaContrato, 12),
+          contrato: strContaContrato,
           codigoTransacao: uuidv4(),
           flagDadosCliente: true,
         },
@@ -54,20 +59,25 @@ class ClientesAPIRepository {
     const email =
       responseClient.contatos.email !== undefined
         ? responseClient.contatos.email
-        : undefined;
+        : null;
+
+    const telefoneFixo = telefones.filter(telefone => telefone.tipo === 'FIXO');
+    const telefoneMovel = telefones.filter(
+      telefone => telefone.tipo === 'MOVEL',
+    );
 
     const cliente = new Cliente({
-      contaContrato: responseClient.contaContrato,
+      contaContrato: strContaContrato,
       nome: responseClient.sobrenome
-        ? responseClient.nome + responseClient.sobrenome
+        ? `${responseClient.nome} ${responseClient.sobrenome}`
         : responseClient.nome,
+      telefoneFixo: telefoneFixo.length
+        ? telefoneFixo.map(telefone => telefone.numero)
+        : [],
+      telefoneMovel: telefoneMovel.length
+        ? telefoneMovel.map(telefone => telefone.numero)
+        : [],
       email,
-      telefoneFixo: telefones.map(telefone =>
-        telefone.tipo === 'FIXO' ? telefone.numero : undefined,
-      ),
-      telefoneMovel: telefones.map(telefone =>
-        telefone.tipo === 'MOVEL' ? telefone.numero : undefined,
-      ),
     });
 
     return cliente;

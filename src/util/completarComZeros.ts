@@ -1,5 +1,5 @@
-function completarComZeros(numero: string, tamanho: number): string {
-  let numeroFormatado = numero.toString();
+function completarComZeros(str: string, tamanho: number): string {
+  let numeroFormatado = str.toString();
   let contador = numeroFormatado.length;
 
   while (contador < tamanho) {
