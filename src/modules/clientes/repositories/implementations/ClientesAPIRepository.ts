@@ -2,15 +2,16 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import prepararStringContaContrato from '../../../../util/prepararStringContaContrato';
-import IBuscarPorContaContratoDTO from '../../../dtos/IBuscarPorContaContratoDTO';
+import IBuscarPorContaContratoDTO from '../../dtos/IBuscarPorContaContratoDTO';
 import Cliente from '../../entities/Cliente';
+import IClientesAPIRepository from '../IClientesAPIRepository';
 
 interface ITelefone {
   tipo: 'FIXO' | 'MOVEL';
   numero: string;
 }
 
-class ClientesAPIRepository {
+class ClientesAPIRepository implements IClientesAPIRepository {
   async buscarPorContaContrato({
     empresaOperadora,
     contaContrato,

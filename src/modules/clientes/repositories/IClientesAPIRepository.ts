@@ -1,4 +1,4 @@
-import IBuscarPorContaContratoDTO from '../../dtos/IBuscarPorContaContratoDTO';
+import IBuscarPorContaContratoDTO from '../dtos/IBuscarPorContaContratoDTO';
 import Cliente from '../entities/Cliente';
 
 interface IClientesAPIRepository {

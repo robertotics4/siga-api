@@ -1,10 +1,4 @@
-interface IClienteDTO {
-  contaContrato: string;
-  nome: string;
-  email?: string;
-  telefoneFixo?: string[];
-  telefoneMovel?: string[];
-}
+import IClienteDTO from '../dtos/IClienteDTO';
 
 class Cliente {
   constructor(data: IClienteDTO) {

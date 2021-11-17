@@ -1,8 +1,9 @@
 import knex from '../../../../database';
 import completarComZeros from '../../../../util/completarComZeros';
 import obterEmpresaPorCodigoOperadora from '../../../../util/obterEmpresaPorCodigoOperadora';
-import IBuscarPorContaContratoDTO from '../../../dtos/IBuscarPorContaContratoDTO';
+import IBuscarPorContaContratoDTO from '../../dtos/IBuscarPorContaContratoDTO';
 import Cliente from '../../entities/Cliente';
+import IClientesTabCadastroRepository from '../IClientesTabCadastroRepository';
 
 interface IClienteResponse {
   CONTA_CONTRATO: string;
@@ -17,17 +18,17 @@ interface ITelefone {
   numero: string;
 }
 
-class ClientesTabCadastroRepository {
+class ClientesTabCadastroRepository implements IClientesTabCadastroRepository {
   async buscarPorContaContrato({
     empresaOperadora,
     contaContrato,
   }: IBuscarPorContaContratoDTO): Promise<Cliente> {
     const empresa = obterEmpresaPorCodigoOperadora(empresaOperadora);
 
-    const query = `SELECT NOME, CONTA_CONTRATO, EMAIL, TEL_FIXO, TEL_MOVEL FROM ${empresa}.TAB_CADASTRO WHERE CONTA_CONTRATO = ${completarComZeros(
+    const query = `SELECT NOME, CONTA_CONTRATO, EMAIL, TEL_FIXO, TEL_MOVEL FROM ${empresa}.TAB_CADASTRO WHERE CONTA_CONTRATO = '${completarComZeros(
       contaContrato,
       12,
-    )}`;
+    )}'`;
 
     const dadosCliente: IClienteResponse[] = await knex.raw(query);
 
@@ -56,7 +57,7 @@ class ClientesTabCadastroRepository {
       telefone => telefone.tipo === 'MOVEL',
     );
 
-    const email = dadosCliente[0].EMAIL ? dadosCliente[0].EMAIL : '';
+    const email = dadosCliente[0].EMAIL ? dadosCliente[0].EMAIL : null;
 
     const cliente = new Cliente({
       contaContrato: dadosCliente[0].CONTA_CONTRATO,

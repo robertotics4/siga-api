@@ -1,9 +1,7 @@
-import knex from '../../../../database';
-import AppError from '../../../../errors/AppError';
-import completarComZeros from '../../../../util/completarComZeros';
-import formatarSolicitacao from '../../../../util/formatarSolicitacao';
-import obterOwnerPorEmpresaOperadora from '../../../../util/obterOwnerPorCodigoOperadora';
+import { inject, injectable } from 'tsyringe';
+
 import Solicitacao from '../../entities/Solicitacao';
+import ISolicitacoesRepository from '../../repositories/ISolicitacoesRepository';
 
 interface IRequest {
   empresaOperadora: number;
@@ -29,46 +27,27 @@ export interface ISolicitacaoResponse {
   TOTAL_SOLICITACOES: number;
 }
 
+@injectable()
 class BuscarSolicitacoesUseCase {
+  constructor(
+    @inject('SolicitacoesRepository')
+    private solicitacoesRepository: ISolicitacoesRepository,
+  ) {}
+
   async execute({
     empresaOperadora,
     contaContrato,
     codigoNota,
     telefone,
   }: IRequest): Promise<Solicitacao[]> {
-    const owner = obterOwnerPorEmpresaOperadora(empresaOperadora);
+    const solicitacoes = await this.solicitacoesRepository.buscarSolicitacoes({
+      empresaOperadora,
+      contaContrato,
+      codigoNota,
+      telefone,
+    });
 
-    if (!owner) {
-      throw new AppError('Código de empresa operadora inválido');
-    }
-
-    let query = `SELECT * FROM ${owner}.CLARA_SOLICITACOES WHERE CONTA_CONTRATO = ${
-      contaContrato && completarComZeros(contaContrato, 12)
-    }`;
-
-    if (codigoNota) {
-      query += ` AND CODIGO_NOTA = ${
-        codigoNota && completarComZeros(codigoNota, 12)
-      }`;
-    }
-
-    if (telefone) {
-      if (telefone.length === 10) {
-        query += ` AND TELEFONE = ${telefone}`;
-      } else if (telefone.length === 11) {
-        query += ` AND TELEFONE_9 = ${telefone}`;
-      }
-    }
-
-    query += ' ORDER BY DATA_SOLICITACAO DESC';
-
-    const solicitacoes: ISolicitacaoResponse[] = await knex.raw(query);
-
-    const solicitacoesFormatadas = solicitacoes.map(solicitacao =>
-      formatarSolicitacao(solicitacao),
-    );
-
-    return solicitacoesFormatadas;
+    return solicitacoes;
   }
 }
 

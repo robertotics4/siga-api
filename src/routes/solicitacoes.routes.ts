@@ -1,9 +1,11 @@
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 
-import buscarSolicitacoesController from '../modules/solicitacoes/useCases/buscarSolicitacoes';
+import BuscarSolicitacoesController from '../modules/solicitacoes/useCases/buscarSolicitacoes/BuscarSolicitacoesController';
 
 const solicitacoesRotas = Router();
+
+const buscarSolicitacoesController = new BuscarSolicitacoesController();
 
 solicitacoesRotas.get(
   '/',
@@ -23,9 +25,7 @@ solicitacoesRotas.get(
         .max(11),
     },
   }),
-  async (request, response) => {
-    return buscarSolicitacoesController.handle(request, response);
-  },
+  buscarSolicitacoesController.handle,
 );
 
 export default solicitacoesRotas;
