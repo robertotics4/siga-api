@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
+import apiCanaisDigitais from '../../../../services/apiCanaisDigitais';
 import prepararStringContaContrato from '../../../../util/prepararStringContaContrato';
 import IBuscarPorContaContratoDTO from '../../dtos/IBuscarPorContaContratoDTO';
 import Cliente from '../../entities/Cliente';
@@ -21,17 +21,14 @@ class ClientesAPIRepository implements IClientesAPIRepository {
       contaContrato,
     );
 
-    const response = await axios.get(
-      `${process.env.URL_API_CANAIS_DIGITAIS}/atendimento/v1/clientes`,
-      {
-        params: {
-          empresaOperadora,
-          contrato: strContaContrato,
-          codigoTransacao: uuidv4(),
-          flagDadosCliente: true,
-        },
+    const response = await apiCanaisDigitais.get('/atendimento/v1/clientes', {
+      params: {
+        empresaOperadora,
+        contrato: strContaContrato,
+        codigoTransacao: uuidv4(),
+        flagDadosCliente: true,
       },
-    );
+    });
 
     const responseClient = response.data.data.cliente[0];
 
