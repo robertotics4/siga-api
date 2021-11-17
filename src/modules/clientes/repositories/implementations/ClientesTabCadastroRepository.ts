@@ -12,6 +12,11 @@ interface IClienteResponse {
   TEL_MOVEL?: string;
 }
 
+interface ITelefone {
+  tipo: 'FIXO' | 'MOVEL';
+  numero: string;
+}
+
 class ClientesTabCadastroRepository {
   async buscarPorContaContrato({
     empresaOperadora,
@@ -19,7 +24,7 @@ class ClientesTabCadastroRepository {
   }: IBuscarPorContaContratoDTO): Promise<Cliente> {
     const empresa = obterEmpresaPorCodigoOperadora(empresaOperadora);
 
-    const query = `SELECT * FROM ${empresa}.TAB_CADASTRO WHERE CONTA_CONTRATO = ${completarComZeros(
+    const query = `SELECT NOME, CONTA_CONTRATO, EMAIL, TEL_FIXO, TEL_MOVEL FROM ${empresa}.TAB_CADASTRO WHERE CONTA_CONTRATO = ${completarComZeros(
       contaContrato,
       12,
     )}`;
@@ -30,23 +35,39 @@ class ClientesTabCadastroRepository {
       return undefined;
     }
 
-    const telFixos = [];
-    const telMoveis = [];
+    const telefones: ITelefone[] = [];
 
-    if (dadosCliente[0].TEL_FIXO !== undefined) {
-      telFixos.push(dadosCliente[0].TEL_FIXO.toString());
+    if (dadosCliente[0].TEL_FIXO) {
+      telefones.push({
+        tipo: 'FIXO',
+        numero: dadosCliente[0].TEL_FIXO.toString(),
+      });
     }
 
-    if (dadosCliente[0].TEL_MOVEL !== undefined) {
-      telMoveis.push(dadosCliente[0].TEL_MOVEL.toString());
+    if (dadosCliente[0].TEL_MOVEL) {
+      telefones.push({
+        tipo: 'MOVEL',
+        numero: dadosCliente[0].TEL_MOVEL.toString(),
+      });
     }
+
+    const telefoneFixo = telefones.filter(telefone => telefone.tipo === 'FIXO');
+    const telefoneMovel = telefones.filter(
+      telefone => telefone.tipo === 'MOVEL',
+    );
+
+    const email = dadosCliente[0].EMAIL ? dadosCliente[0].EMAIL : '';
 
     const cliente = new Cliente({
       contaContrato: dadosCliente[0].CONTA_CONTRATO,
       nome: dadosCliente[0].NOME,
-      email: dadosCliente[0].EMAIL,
-      telefoneFixo: telFixos,
-      telefoneMovel: telMoveis,
+      telefoneFixo: telefoneFixo.length
+        ? telefoneFixo.map(telefone => telefone.numero)
+        : [],
+      telefoneMovel: telefoneMovel.length
+        ? telefoneMovel.map(telefone => telefone.numero)
+        : [],
+      email,
     });
 
     return cliente;
