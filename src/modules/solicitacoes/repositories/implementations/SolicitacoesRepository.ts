@@ -21,8 +21,6 @@ class SolicitacoesRepository implements ISolicitacoesRepository {
       12,
     )}'`;
 
-    console.log({ empresaOperadora, contaContrato, codigoNota, telefone });
-
     if (codigoNota) {
       query += ` AND CODIGO_NOTA = '${completarComZeros(codigoNota, 12)}'`;
     }
@@ -37,7 +35,6 @@ class SolicitacoesRepository implements ISolicitacoesRepository {
 
     query += ' ORDER BY DATA_SOLICITACAO DESC';
 
-    console.log(query);
     const solicitacoesResponse: ISolicitacaoResponse[] = await knex.raw(query);
 
     if (!solicitacoesResponse) {

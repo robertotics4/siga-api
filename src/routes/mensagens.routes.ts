@@ -1,9 +1,12 @@
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 
+import EnviarLinkSigaController from '../modules/mensagens/useCases/EnviarLinkSiga/EnviarLinkSigaController';
 import persistirMensagemLogController from '../modules/mensagens/useCases/PersistirMensagemLog';
 
 const mensagensRotas = Router();
+
+const enviarLinkSigaController = new EnviarLinkSigaController();
 
 mensagensRotas.post(
   '/',
@@ -43,5 +46,7 @@ mensagensRotas.post(
     return persistirMensagemLogController.handle(request, response);
   },
 );
+
+mensagensRotas.post('/enviar-link', enviarLinkSigaController.handle);
 
 export default mensagensRotas;
