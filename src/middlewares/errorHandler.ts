@@ -29,7 +29,8 @@ function errorHandler(
 
   return response.status(500).json({
     status: 'Error',
-    message: 'Internal server error',
+    message: err.message,
+    // message: 'Internal server error',
   });
 }
 

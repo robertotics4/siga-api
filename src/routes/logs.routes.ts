@@ -19,7 +19,12 @@ logsRotas.post(
         .pattern(new RegExp(/^[0-9.]+$/))
         .min(10)
         .max(11),
-      dataEnvio: Joi.string(),
+      dataEnvio: Joi.string()
+        .required()
+        .regex(/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})$/)
+        .messages({
+          'string.pattern.base': 'dataEnvio inválida (ex: DD/MM/YYYY HH:MI:SS)',
+        }),
       idEnvio: Joi.string(),
       mensagemEnviada: Joi.string(),
       tipoSolicitacao: Joi.string().required(),
@@ -36,7 +41,11 @@ logsRotas.post(
         .required()
         .valid('PUSH', 'PUSH - ATIVO', 'SERVICO', 'SERVICO - ATIVO'),
       usuario: Joi.string(),
-      dataNota: Joi.string(),
+      dataNota: Joi.string()
+        .regex(/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2}):(\d{2})$/)
+        .messages({
+          'string.pattern.base': 'dataNota inválida (ex: DD/MM/YYYY HH:MI:SS)',
+        }),
     },
   }),
   gravarLogMensagemController.handle,

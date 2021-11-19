@@ -1,4 +1,5 @@
 import knex from '../../../../database';
+import converterDateParaString from '../../../../util/converterDateParaString';
 import inserirApostrofo from '../../../../util/inserirApostrofo';
 import obterEmpresaPorCodigoOperadora from '../../../../util/obterEmpresaPorCodigoOperadora';
 import obterOwnerPorCodigoOperadora from '../../../../util/obterOwnerPorCodigoOperadora';
@@ -6,10 +7,26 @@ import IGravarLogMensagemDTO from '../../dtos/IGravarLogMensagemDTO';
 import ILogsMensagensRepository from '../ILogsMensagensRepository';
 
 class LogsMensagensRepository implements ILogsMensagensRepository {
-  async gravarLogMensagem(data: IGravarLogMensagemDTO): Promise<void> {
-    const owner = obterOwnerPorCodigoOperadora(data.empresaOperadora);
+  async gravarLogMensagem({
+    empresaOperadora,
+    canal,
+    sessao,
+    telefone,
+    dataEnvio,
+    idEnvio,
+    mensagemEnviada,
+    tipoSolicitacao,
+    codigoServico,
+    codigoNota,
+    contaContrato,
+    status,
+    categoria,
+    usuario,
+    dataNota,
+  }: IGravarLogMensagemDTO): Promise<void> {
+    const owner = obterOwnerPorCodigoOperadora(empresaOperadora);
 
-    const empresa = obterEmpresaPorCodigoOperadora(data.empresaOperadora);
+    const empresa = obterEmpresaPorCodigoOperadora(empresaOperadora);
 
     const query = `INSERT INTO ${owner}.CLARA_MSG_SAIDA_ENVIADA (
       EMPRESA,
@@ -29,21 +46,29 @@ class LogsMensagensRepository implements ILogsMensagensRepository {
       DATA_NOTA
     ) VALUES (
       '${empresa}',
-      '${data.canal}',
-      ${data.sessao ? inserirApostrofo(data.sessao) : null},
-      '${data.telefone}',
-      TO_TIMESTAMP_TZ('${data.dataEnvio}', 'YYYY-MM-DD"t"HH24:MI:SS.FF7TZR'),
-      '${data.idEnvio}',
-      '${data.mensagemEnviada}',
-      '${data.tipoSolicitacao}',
-      ${data.codigoServico ? inserirApostrofo(data.codigoServico) : null},
-      ${data.codigoNota ? inserirApostrofo(data.codigoNota) : null},
-      '${data.contaContrato}',
-      ${data.status ? inserirApostrofo(data.status) : null},
-      '${data.categoria}',
-      ${data.usuario ? inserirApostrofo(data.usuario) : null},
-      ${data.dataNota ? `TO_DATE('${data.dataNota}', 'DD/MM/YYYY')` : null}
+      '${canal}',
+      ${sessao ? inserirApostrofo(sessao) : null},
+      '${telefone}',
+      TO_DATE('${converterDateParaString(dataEnvio)}', 'DD/MM/YYYY HH24:MI:SS'),
+      '${idEnvio}',
+      '${mensagemEnviada}',
+      '${tipoSolicitacao}',
+      ${codigoServico ? inserirApostrofo(codigoServico) : null},
+      ${codigoNota ? inserirApostrofo(codigoNota) : null},
+      '${contaContrato}',
+      ${status ? inserirApostrofo(status) : null},
+      '${categoria}',
+      ${usuario ? inserirApostrofo(usuario) : null},
+      ${
+        dataNota
+          ? `TO_DATE('${converterDateParaString(
+              dataNota,
+            )}', 'DD/MM/YYYY HH24:MI:SS')`
+          : null
+      }
     )`;
+
+    console.log(query);
 
     await knex.raw(query);
     await knex.raw('COMMIT');

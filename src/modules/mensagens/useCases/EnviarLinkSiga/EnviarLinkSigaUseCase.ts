@@ -1,9 +1,11 @@
 import { inject, injectable } from 'tsyringe';
+import { v4 as uuidv4 } from 'uuid';
 
 import AppError from '../../../../errors/AppError';
 import verificarTelefoneMaisUsado from '../../../../util/verficiarTelefoneMaisUsado';
 import IClientesAPIRepository from '../../../clientes/repositories/IClientesAPIRepository';
 import IClientesTabCadastroRepository from '../../../clientes/repositories/IClientesTabCadastroRepository';
+import ILogsMensagensRepository from '../../../logs/repositories/ILogsMensagensRepository';
 import ISolicitacoesRepository from '../../../solicitacoes/repositories/ISolicitacoesRepository';
 import IMensagensRepository from '../../repositories/IMensagensRepository';
 
@@ -33,6 +35,9 @@ class EnviarLinkSigaUseCase {
 
     @inject('ClientesTabCadastroRepository')
     private clientesTabCadastroRepository: IClientesTabCadastroRepository,
+
+    @inject('LogsMensagensRepository')
+    private logsMensagensRepository: ILogsMensagensRepository,
   ) {}
 
   async execute({
@@ -108,11 +113,29 @@ class EnviarLinkSigaUseCase {
 
     await this.mensagensRepository.enviarLinkSiga({
       empresaOperadora,
-      telefone: telefonesParaEnvio.principal,
+      telefone: '9882045774',
+      // telefone: telefonesParaEnvio.principal,
       contaContrato,
       codigoNota,
       link,
       sessao,
+    });
+
+    await this.logsMensagensRepository.gravarLogMensagem({
+      empresaOperadora,
+      canal: 'whatsapp',
+      sessao: sessao || undefined,
+      telefone: telefonesParaEnvio.principal,
+      dataEnvio: new Date(),
+      idEnvio: uuidv4(),
+      mensagemEnviada: 'mensagem de teste', // HARD CODDED
+      tipoSolicitacao: `SIGA_ACOMPANHAMENTO`,
+      codigoServico: solicitacaoEncontrada.codigoServico || undefined,
+      codigoNota: solicitacaoEncontrada.codigoNota || undefined,
+      contaContrato,
+      categoria: sessao ? 'PUSH' : 'PUSH - ATIVO',
+      usuario: 'teste', // HARD CODDED
+      dataNota: solicitacaoEncontrada.dataSolicitacao || undefined,
     });
   }
 }

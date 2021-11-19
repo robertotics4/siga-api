@@ -13,7 +13,7 @@ interface IGravarLogMensagemDTO {
   status?: string;
   categoria: 'PUSH' | 'PUSH - ATIVO' | 'SERVICO' | 'SERVICO - ATIVO';
   usuario?: string;
-  dataNota?: string;
+  dataNota?: Date;
 }
 
 export default IGravarLogMensagemDTO;
