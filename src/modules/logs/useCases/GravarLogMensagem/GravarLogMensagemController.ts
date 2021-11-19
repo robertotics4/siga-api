@@ -1,15 +1,12 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
 
-import PersistirMensagemLogUseCase from './PersistirMensagemLogUseCase';
+import GravarLogMensagemUseCase from './GravarLogMensagemUseCase';
 
-class PersistirMensagemLogController {
-  constructor(
-    private persistirMensagemLogUseCase: PersistirMensagemLogUseCase,
-  ) {}
-
+class GravarLogMensagemController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const empresaOperadora = Number(request.query.empresaOperadora) as number;
     const {
+      empresaOperadora,
       canal,
       sessao,
       telefone,
@@ -26,7 +23,11 @@ class PersistirMensagemLogController {
       dataNota,
     } = request.body;
 
-    await this.persistirMensagemLogUseCase.execute({
+    const gravarLogMensagemUseCase = container.resolve(
+      GravarLogMensagemUseCase,
+    );
+
+    await gravarLogMensagemUseCase.execute({
       empresaOperadora,
       canal,
       sessao,
@@ -44,8 +45,8 @@ class PersistirMensagemLogController {
       dataNota,
     });
 
-    return response.status(201).json({ message: 'Log registrado com sucesso' });
+    return response.status(201).send();
   }
 }
 
-export default PersistirMensagemLogController;
+export default GravarLogMensagemController;

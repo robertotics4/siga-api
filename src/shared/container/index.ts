@@ -4,6 +4,8 @@ import IClientesAPIRepository from '../../modules/clientes/repositories/ICliente
 import IClientesTabCadastroRepository from '../../modules/clientes/repositories/IClientesTabCadastroRepository';
 import ClientesAPIRepository from '../../modules/clientes/repositories/implementations/ClientesAPIRepository';
 import ClientesTabCadastroRepository from '../../modules/clientes/repositories/implementations/ClientesTabCadastroRepository';
+import ILogsMensagensRepository from '../../modules/logs/repositories/ILogsMensagensRepository';
+import LogsMensagensRepository from '../../modules/logs/repositories/implementations/LogsMensagensRepository';
 import IMensagensRepository from '../../modules/mensagens/repositories/IMensagensRepository';
 import MensagensRepository from '../../modules/mensagens/repositories/implementations/MensagensRepository';
 import SolicitacoesRepository from '../../modules/solicitacoes/repositories/implementations/SolicitacoesRepository';
@@ -27,4 +29,9 @@ container.registerSingleton<ISolicitacoesRepository>(
 container.registerSingleton<IMensagensRepository>(
   'MensagensRepository',
   MensagensRepository,
+);
+
+container.registerSingleton<ILogsMensagensRepository>(
+  'LogsMensagensRepository',
+  LogsMensagensRepository,
 );
