@@ -1,10 +1,17 @@
 import { differenceInHours } from 'date-fns';
 
-function verificarSessaoAtiva(dataSolicitacao: Date): boolean {
-  const diferencaEmHoras = differenceInHours(new Date(), dataSolicitacao);
+import { ISolicitacaoResponse } from '../modules/solicitacoes/useCases/buscarSolicitacoes/BuscarSolicitacoesUseCase';
 
-  if (diferencaEmHoras < 24) {
-    return true;
+function verificarSessaoAtiva(solicitacao: ISolicitacaoResponse): boolean {
+  if (solicitacao.CANAL.toLowerCase() === 'whatsapp') {
+    const diferencaEmHoras = differenceInHours(
+      new Date(),
+      solicitacao.DATA_SOLICITACAO,
+    );
+
+    if (diferencaEmHoras < 24) {
+      return true;
+    }
   }
 
   return false;

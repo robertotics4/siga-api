@@ -39,8 +39,10 @@ class MensagensRepository implements IMensagensRepository {
           id: uuidv4(),
           preview_url: true,
           type: 'text',
-          text: `Segue o link para acompanhamento ${link}`, // HARD CODDED
-          userId: `+55${outgoingToken}`,
+          text: {
+            body: `Segue o link para acompanhamento ${link}`,
+          },
+          userId: `55${telefone}`,
         },
         {
           headers: {

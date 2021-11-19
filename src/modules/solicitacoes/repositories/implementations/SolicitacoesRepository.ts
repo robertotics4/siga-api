@@ -58,7 +58,7 @@ class SolicitacoesRepository implements ISolicitacoesRepository {
           municipio: solicitacao.MUNICIPIO,
           tipoSolicitacao: solicitacao.TIPO_SOLICITACAO,
           totalSolicitacoes: solicitacao.TOTAL_SOLICITACOES,
-          sessaoAtiva: verificarSessaoAtiva(solicitacao.DATA_SOLICITACAO),
+          sessaoAtiva: verificarSessaoAtiva(solicitacao),
         }),
     );
 
