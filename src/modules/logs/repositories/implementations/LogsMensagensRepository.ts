@@ -68,8 +68,6 @@ class LogsMensagensRepository implements ILogsMensagensRepository {
       }
     )`;
 
-    console.log(query);
-
     await knex.raw(query);
     await knex.raw('COMMIT');
   }
