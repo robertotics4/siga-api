@@ -15,21 +15,19 @@ class MensagensRepository implements IMensagensRepository {
     codigoNota,
     tipoSolicitacao,
     link,
-    sessao,
+    idSessaoAtiva,
   }: IEnviarLinkSigaDTO): Promise<void> {
     const { id, outgoingToken } = getRequestYaloInfo(empresaOperadora);
 
-    if (!sessao) {
+    if (!idSessaoAtiva) {
       await apiYaloNotification.post(`/${id}/notifications`, {
         type: process.env.TYPE_MESSAGE_YALO,
         users: [
           {
             phone: `+55${telefone}`,
             params: {
-              servico: contaContrato,
-              data: new Date(),
-              protocolo: codigoNota,
-              motivo: link,
+              servico: tipoSolicitacao,
+              link,
             },
           },
         ],

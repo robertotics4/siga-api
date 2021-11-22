@@ -107,7 +107,7 @@ class EnviarLinkSigaUseCase {
     }
 
     // Verifica se existe uma sessão ativa com o cliente
-    const sessao =
+    const idSessaoAtiva =
       solicitacaoEncontrada && solicitacaoEncontrada.sessaoAtiva
         ? solicitacaoEncontrada.sessao
         : undefined;
@@ -120,13 +120,13 @@ class EnviarLinkSigaUseCase {
       codigoNota,
       tipoSolicitacao: solicitacaoEncontrada.tipoSolicitacao,
       link,
-      sessao,
+      idSessaoAtiva,
     });
 
     await this.logsMensagensRepository.gravarLogMensagem({
       empresaOperadora,
       canal: 'whatsapp',
-      sessao: sessao || undefined,
+      sessao: idSessaoAtiva || undefined,
       telefone: telefonesParaEnvio.principal,
       dataEnvio: new Date(),
       idEnvio: uuidv4(),
@@ -139,7 +139,7 @@ class EnviarLinkSigaUseCase {
       codigoServico: solicitacaoEncontrada.codigoServico || undefined,
       codigoNota: solicitacaoEncontrada.codigoNota || undefined,
       contaContrato,
-      categoria: sessao ? 'PUSH' : 'PUSH - ATIVO',
+      categoria: idSessaoAtiva ? 'PUSH' : 'PUSH - ATIVO',
       usuario: 'teste', // HARD CODDED
       dataNota: solicitacaoEncontrada.dataSolicitacao || undefined,
     });

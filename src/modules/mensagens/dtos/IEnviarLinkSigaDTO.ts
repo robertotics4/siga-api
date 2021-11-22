@@ -5,7 +5,7 @@ interface IEnviarLinkSigaDTO {
   codigoNota: string;
   tipoSolicitacao: string;
   link: string;
-  sessao?: string;
+  idSessaoAtiva?: string;
 }
 
 export default IEnviarLinkSigaDTO;
