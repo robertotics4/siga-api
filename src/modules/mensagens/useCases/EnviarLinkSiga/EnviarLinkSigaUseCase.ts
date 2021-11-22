@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 
 import AppError from '../../../../errors/AppError';
+import prepararMensagemSiga from '../../../../util/prepararMensagemSiga';
 import verificarTelefoneMaisUsado from '../../../../util/verficiarTelefoneMaisUsado';
 import IClientesAPIRepository from '../../../clientes/repositories/IClientesAPIRepository';
 import IClientesTabCadastroRepository from '../../../clientes/repositories/IClientesTabCadastroRepository';
@@ -117,6 +118,7 @@ class EnviarLinkSigaUseCase {
       // telefone: telefonesParaEnvio.principal,
       contaContrato,
       codigoNota,
+      tipoSolicitacao: solicitacaoEncontrada.tipoSolicitacao,
       link,
       sessao,
     });
@@ -128,7 +130,11 @@ class EnviarLinkSigaUseCase {
       telefone: telefonesParaEnvio.principal,
       dataEnvio: new Date(),
       idEnvio: uuidv4(),
-      mensagemEnviada: 'mensagem de teste', // HARD CODDED
+      mensagemEnviada: prepararMensagemSiga(
+        solicitacaoEncontrada.tipoSolicitacao,
+        codigoNota,
+        link,
+      ).replace(/\*/g, ''), // VERIFICAR
       tipoSolicitacao: `SIGA_ACOMPANHAMENTO`,
       codigoServico: solicitacaoEncontrada.codigoServico || undefined,
       codigoNota: solicitacaoEncontrada.codigoNota || undefined,

@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import apiYaloNotification from '../../../../services/apiYaloNotification';
 import apiYaloOutgoing from '../../../../services/apiYaloOutgoing';
 import getRequestYaloInfo from '../../../../util/getRequestYaloInfo';
+import prepararMensagemSiga from '../../../../util/prepararMensagemSiga';
 import IEnviarLinkSigaDTO from '../../dtos/IEnviarLinkSigaDTO';
 import IMensagensRepository from '../IMensagensRepository';
 
@@ -12,6 +13,7 @@ class MensagensRepository implements IMensagensRepository {
     telefone,
     contaContrato,
     codigoNota,
+    tipoSolicitacao,
     link,
     sessao,
   }: IEnviarLinkSigaDTO): Promise<void> {
@@ -40,7 +42,7 @@ class MensagensRepository implements IMensagensRepository {
           preview_url: true,
           type: 'text',
           text: {
-            body: `Segue o link para acompanhamento ${link}`,
+            body: prepararMensagemSiga(tipoSolicitacao, codigoNota, link),
           },
           userId: `55${telefone}`,
         },
