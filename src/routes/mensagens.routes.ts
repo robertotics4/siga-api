@@ -19,6 +19,7 @@ mensagensRotas.post(
       codigoNota: Joi.string()
         .pattern(new RegExp(/^[0-9.]+$/))
         .max(12),
+      tipoSolicitacao: Joi.string().required(),
       link: Joi.string().required(),
     },
   }),

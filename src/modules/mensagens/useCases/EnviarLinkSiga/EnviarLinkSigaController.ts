@@ -5,7 +5,13 @@ import EnviarLinkSigaUseCase from './EnviarLinkSigaUseCase';
 
 class EnviarLinkSigaController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { empresaOperadora, contaContrato, codigoNota, link } = request.body;
+    const {
+      empresaOperadora,
+      contaContrato,
+      codigoNota,
+      tipoSolicitacao,
+      link,
+    } = request.body;
 
     const enviarLinkSigaUseCase = container.resolve(EnviarLinkSigaUseCase);
 
@@ -13,6 +19,7 @@ class EnviarLinkSigaController {
       empresaOperadora: Number(empresaOperadora),
       contaContrato,
       codigoNota,
+      tipoSolicitacao,
       link,
     });
 

@@ -14,6 +14,7 @@ interface IRequest {
   empresaOperadora: number;
   contaContrato: string;
   codigoNota: string;
+  tipoSolicitacao: string;
   link: string;
 }
 
@@ -45,8 +46,17 @@ class EnviarLinkSigaUseCase {
     empresaOperadora,
     contaContrato,
     codigoNota,
+    tipoSolicitacao,
     link,
   }: IRequest): Promise<void> {
+    console.log({
+      empresaOperadora,
+      contaContrato,
+      codigoNota,
+      tipoSolicitacao,
+      link,
+    });
+
     const telefonesParaEnvio: ITelefonesParaEnvio = {} as ITelefonesParaEnvio;
 
     // Buscando telefone nas solicitações
@@ -118,10 +128,16 @@ class EnviarLinkSigaUseCase {
       // telefone: telefonesParaEnvio.principal,
       contaContrato,
       codigoNota,
-      tipoSolicitacao: solicitacaoEncontrada.tipoSolicitacao,
+      tipoSolicitacao,
       link,
       idSessaoAtiva,
     });
+
+    const mensagemEnviada = prepararMensagemSiga(
+      tipoSolicitacao,
+      codigoNota,
+      link,
+    ).replace(/\*/g, '');
 
     await this.logsMensagensRepository.gravarLogMensagem({
       empresaOperadora,
@@ -130,18 +146,18 @@ class EnviarLinkSigaUseCase {
       telefone: telefonesParaEnvio.principal,
       dataEnvio: new Date(),
       idEnvio: uuidv4(),
-      mensagemEnviada: prepararMensagemSiga(
-        solicitacaoEncontrada.tipoSolicitacao,
-        codigoNota,
-        link,
-      ).replace(/\*/g, ''), // VERIFICAR
+      mensagemEnviada,
       tipoSolicitacao: `SIGA_ACOMPANHAMENTO`,
-      codigoServico: solicitacaoEncontrada.codigoServico || undefined,
-      codigoNota: solicitacaoEncontrada.codigoNota || undefined,
+      codigoServico: solicitacaoEncontrada
+        ? solicitacaoEncontrada.codigoServico
+        : undefined,
+      codigoNota,
       contaContrato,
       categoria: idSessaoAtiva ? 'PUSH' : 'PUSH - ATIVO',
       usuario: 'teste', // HARD CODDED
-      dataNota: solicitacaoEncontrada.dataSolicitacao || undefined,
+      dataNota: solicitacaoEncontrada
+        ? solicitacaoEncontrada.dataSolicitacao
+        : undefined,
     });
   }
 }
