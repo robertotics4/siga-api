@@ -1,9 +1,12 @@
 import knex from '../../../../database';
+import completarComZeros from '../../../../util/completarComZeros';
 import converterDateParaString from '../../../../util/converterDateParaString';
 import inserirApostrofo from '../../../../util/inserirApostrofo';
 import obterEmpresaPorCodigoOperadora from '../../../../util/obterEmpresaPorCodigoOperadora';
 import obterOwnerPorCodigoOperadora from '../../../../util/obterOwnerPorCodigoOperadora';
+import IBuscarLogsMensagemDTO from '../../dtos/IBuscarLogsMensagemDTO';
 import IGravarLogMensagemDTO from '../../dtos/IGravarLogMensagemDTO';
+import LogItem from '../../entities/LogItem';
 import ILogsMensagensRepository from '../ILogsMensagensRepository';
 
 class LogsMensagensRepository implements ILogsMensagensRepository {
@@ -70,6 +73,23 @@ class LogsMensagensRepository implements ILogsMensagensRepository {
 
     await knex.raw(query);
     await knex.raw('COMMIT');
+  }
+
+  async buscarLogsMensagem({
+    empresaOperadora,
+    contaContrato,
+    telefone,
+  }: IBuscarLogsMensagemDTO): Promise<LogItem[]> {
+    const owner = obterOwnerPorCodigoOperadora(empresaOperadora);
+
+    const query = `SELECT * FROM ${owner}.CLARA_MSG_SAIDA_ENVIADA WHERE conta_contrato = '${completarComZeros(
+      contaContrato,
+      12,
+    )}' AND telefone = '${telefone}'`;
+
+    const logItens = await knex.raw(query);
+
+    return logItens;
   }
 }
 

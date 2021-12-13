@@ -1,11 +1,13 @@
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 
+import BuscarLogMensagemController from '../modules/logs/useCases/BuscarLogsMensagem/BuscarLogsMensagemController';
 import GravarLogMensagemController from '../modules/logs/useCases/GravarLogMensagem/GravarLogMensagemController';
 
 const logsRotas = Router();
 
 const gravarLogMensagemController = new GravarLogMensagemController();
+const buscarLogMensagemController = new BuscarLogMensagemController();
 
 logsRotas.post(
   '/',
@@ -62,6 +64,25 @@ logsRotas.post(
     },
   }),
   gravarLogMensagemController.handle,
+);
+
+logsRotas.get(
+  '/',
+  celebrate({
+    [Segments.QUERY]: {
+      empresaOperadora: Joi.number().required().valid(82, 86, 95, 98),
+      contaContrato: Joi.string()
+        .required()
+        .pattern(new RegExp(/^[0-9.]+$/))
+        .max(12),
+      telefone: Joi.string()
+        .required()
+        .pattern(new RegExp(/^[0-9.]+$/))
+        .min(10)
+        .max(11),
+    },
+  }),
+  buscarLogMensagemController.handle,
 );
 
 export default logsRotas;
