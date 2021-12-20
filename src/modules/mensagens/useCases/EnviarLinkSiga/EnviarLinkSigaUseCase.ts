@@ -1,7 +1,9 @@
+import { parse, getHours } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 
 import AppError from '../../../../errors/AppError';
+import isWithinOfficeHours from '../../../../util/isWithinOfficeHours';
 import prepararMensagemSiga from '../../../../util/prepararMensagemSiga';
 import verificarTelefoneMaisUsado from '../../../../util/verficiarTelefoneMaisUsado';
 import IClientesAPIRepository from '../../../clientes/repositories/IClientesAPIRepository';
@@ -49,15 +51,11 @@ class EnviarLinkSigaUseCase {
     tipoSolicitacao,
     link,
   }: IRequest): Promise<void> {
-    console.log({
-      empresaOperadora,
-      contaContrato,
-      codigoNota,
-      tipoSolicitacao,
-      link,
-    });
-
     const telefonesParaEnvio: ITelefonesParaEnvio = {} as ITelefonesParaEnvio;
+
+    if (!isWithinOfficeHours()) {
+      throw new AppError('Serviço indisponível neste horário');
+    }
 
     // Buscando telefone nas solicitações
     const solicitacoes = await this.solicitacoesRepository.buscarSolicitacoes({
