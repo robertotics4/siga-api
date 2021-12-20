@@ -8,7 +8,7 @@ const mensagensRotas = Router();
 const enviarLinkSigaController = new EnviarLinkSigaController();
 
 mensagensRotas.post(
-  '/enviar',
+  '/',
   celebrate({
     [Segments.BODY]: {
       empresaOperadora: Joi.number().required().valid(82, 86, 95, 98),
