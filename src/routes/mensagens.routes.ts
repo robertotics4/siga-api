@@ -21,6 +21,10 @@ mensagensRotas.post(
         .max(12),
       tipoSolicitacao: Joi.string().required(),
       link: Joi.string().required(),
+      tipoMensagem: Joi.string()
+        .valid('INICIAR', 'CONCLUIR', 'CANCELAR')
+        .insensitive()
+        .required(),
     },
   }),
   enviarLinkSigaController.handle,

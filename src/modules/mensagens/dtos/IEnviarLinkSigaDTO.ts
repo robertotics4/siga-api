@@ -6,6 +6,7 @@ interface IEnviarLinkSigaDTO {
   tipoSolicitacao: string;
   link: string;
   idSessaoAtiva?: string;
+  tipoMensagem: 'INICIAR' | 'CONCLUIR' | 'CANCELAR';
 }
 
 export default IEnviarLinkSigaDTO;

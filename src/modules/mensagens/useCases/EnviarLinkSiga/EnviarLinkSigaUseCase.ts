@@ -1,4 +1,3 @@
-import { parse, getHours } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -18,6 +17,7 @@ interface IRequest {
   codigoNota: string;
   tipoSolicitacao: string;
   link: string;
+  tipoMensagem: 'INICIAR' | 'CONCLUIR' | 'CANCELAR';
 }
 
 interface ITelefonesParaEnvio {
@@ -50,6 +50,7 @@ class EnviarLinkSigaUseCase {
     codigoNota,
     tipoSolicitacao,
     link,
+    tipoMensagem,
   }: IRequest): Promise<void> {
     const telefonesParaEnvio: ITelefonesParaEnvio = {} as ITelefonesParaEnvio;
 
@@ -129,6 +130,7 @@ class EnviarLinkSigaUseCase {
       tipoSolicitacao,
       link,
       idSessaoAtiva,
+      tipoMensagem,
     });
 
     const mensagemEnviada = prepararMensagemSiga(
@@ -145,7 +147,7 @@ class EnviarLinkSigaUseCase {
       dataEnvio: new Date(),
       idEnvio: uuidv4(),
       mensagemEnviada,
-      tipoSolicitacao: `SIGA_ACOMPANHAMENTO`,
+      tipoSolicitacao: `SIGA_${tipoMensagem}`,
       codigoServico: solicitacaoEncontrada
         ? solicitacaoEncontrada.codigoServico
         : undefined,
