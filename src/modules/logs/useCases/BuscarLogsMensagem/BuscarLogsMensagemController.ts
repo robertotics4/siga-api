@@ -8,6 +8,7 @@ class BuscarLogsMensagemController {
     const empresaOperadora = Number(request.query.empresaOperadora);
     const contaContrato = request.query.contaContrato as string;
     const telefone = request.query.telefone as string;
+    const codigoNota = request.query.codigoNota as string;
 
     const buscarLogsMensagemUseCase = container.resolve(
       BuscarLogsMensagemUseCase,
@@ -17,6 +18,7 @@ class BuscarLogsMensagemController {
       empresaOperadora,
       contaContrato,
       telefone,
+      codigoNota,
     });
 
     return response.status(200).json(logItens);

@@ -15,11 +15,13 @@ class BuscarLogsMensagemUseCase {
     empresaOperadora,
     contaContrato,
     telefone,
+    codigoNota,
   }: IBuscarLogsMensagemDTO): Promise<LogItem[]> {
     const logItens = await this.logsMensagensRepository.buscarLogsMensagem({
       empresaOperadora,
       contaContrato,
       telefone,
+      codigoNota,
     });
 
     return logItens;

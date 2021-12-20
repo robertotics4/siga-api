@@ -80,6 +80,9 @@ logsRotas.get(
         .pattern(new RegExp(/^[0-9.]+$/))
         .min(10)
         .max(11),
+      codigoNota: Joi.string()
+        .pattern(new RegExp(/^[0-9.]+$/))
+        .max(12),
     },
   }),
   buscarLogMensagemController.handle,

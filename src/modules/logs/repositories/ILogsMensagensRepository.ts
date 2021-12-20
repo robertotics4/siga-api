@@ -8,6 +8,7 @@ interface ILogsMensagensRepository {
     empresaOperadora,
     contaContrato,
     telefone,
+    codigoNota,
   }: IBuscarLogsMensagemDTO): Promise<LogItem[]>;
 }
 
