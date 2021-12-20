@@ -12,7 +12,7 @@ const buscarClienteTabCadastroController =
 const buscarClienteAPIController = new BuscarClienteAPIController();
 
 clientesRotas.get(
-  '/consultar-cadastro',
+  '/cadastro',
   celebrate({
     [Segments.QUERY]: {
       empresaOperadora: Joi.number().required().valid(82, 86, 95, 98),
@@ -26,7 +26,7 @@ clientesRotas.get(
 );
 
 clientesRotas.get(
-  '/consultar-api',
+  '/api',
   celebrate({
     [Segments.QUERY]: {
       empresaOperadora: Joi.number().required().valid(82, 86, 95, 98),
