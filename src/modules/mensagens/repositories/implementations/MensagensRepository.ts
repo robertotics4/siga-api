@@ -7,6 +7,12 @@ import prepararMensagemSiga from '../../../../util/prepararMensagemSiga';
 import IEnviarLinkSigaDTO from '../../dtos/IEnviarLinkSigaDTO';
 import IMensagensRepository from '../IMensagensRepository';
 
+const messageTemplates = {
+  INICIAR: process.env.TYPE_MESSAGE_YALO_START,
+  CONCLUIR: process.env.TYPE_MESSAGE_YALO_CONCLUDE,
+  CANCELAR: process.env.TYPE_MESSAGE_YALO_CANCEL,
+};
+
 class MensagensRepository implements IMensagensRepository {
   async enviarLinkSiga({
     empresaOperadora,
@@ -18,10 +24,11 @@ class MensagensRepository implements IMensagensRepository {
     idSessaoAtiva,
   }: IEnviarLinkSigaDTO): Promise<void> {
     const { id, outgoingToken } = getRequestYaloInfo(empresaOperadora);
+    const messageTemplate = messageTemplates.INICIAR;
 
     if (!idSessaoAtiva) {
       await apiYaloNotification.post(`/${id}/notifications`, {
-        type: process.env.TYPE_MESSAGE_YALO,
+        type: messageTemplate,
         users: [
           {
             phone: `+55${telefone}`,
@@ -40,7 +47,12 @@ class MensagensRepository implements IMensagensRepository {
           preview_url: true,
           type: 'text',
           text: {
-            body: prepararMensagemSiga(tipoSolicitacao, codigoNota, link),
+            body: prepararMensagemSiga(
+              tipoSolicitacao,
+              codigoNota,
+              'INICIAR',
+              link,
+            ),
           },
           userId: `55${telefone}`,
         },

@@ -8,7 +8,7 @@ const mensagensRotas = Router();
 const enviarLinkSigaController = new EnviarLinkSigaController();
 
 mensagensRotas.post(
-  '/',
+  '/iniciar',
   celebrate({
     [Segments.BODY]: {
       empresaOperadora: Joi.number().required().valid(82, 86, 95, 98),
@@ -21,10 +21,6 @@ mensagensRotas.post(
         .max(12),
       tipoSolicitacao: Joi.string().required(),
       link: Joi.string().required(),
-      tipoMensagem: Joi.string()
-        .valid('INICIAR', 'CONCLUIR', 'CANCELAR')
-        .insensitive()
-        .required(),
     },
   }),
   enviarLinkSigaController.handle,

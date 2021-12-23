@@ -1,7 +1,7 @@
 interface IBuscarLogsMensagemDTO {
   empresaOperadora: number;
   contaContrato: string;
-  telefone: string;
+  telefone?: string;
   codigoNota?: string;
 }
 

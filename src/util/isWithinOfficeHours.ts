@@ -22,12 +22,6 @@ function isWithinOfficeHours(): boolean {
 
   const now = new Date();
 
-  console.log({
-    horaInicioAtendimento,
-    horaFimAtendimento,
-    horaAtual: getHours(now),
-  });
-
   if (
     getHours(now) < horaInicioAtendimento ||
     getHours(now) > horaFimAtendimento

@@ -86,13 +86,15 @@ class LogsMensagensRepository implements ILogsMensagensRepository {
     let query = `SELECT * FROM ${owner}.CLARA_MSG_SAIDA_ENVIADA WHERE conta_contrato = '${completarComZeros(
       contaContrato,
       12,
-    )}' AND telefone = '${telefone}'`;
+    )}'`;
+
+    if (telefone) {
+      query += ` AND telefone = '${telefone}'`;
+    }
 
     if (codigoNota) {
       query += ` AND CODIGO_NOTA = '${completarComZeros(codigoNota, 12)}'`;
     }
-
-    console.log(query);
 
     const logItens = await knex.raw(query);
 

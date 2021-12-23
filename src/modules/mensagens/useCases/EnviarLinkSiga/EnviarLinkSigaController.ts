@@ -11,7 +11,6 @@ class EnviarLinkSigaController {
       codigoNota,
       tipoSolicitacao,
       link,
-      tipoMensagem,
     } = request.body;
 
     const enviarLinkSigaUseCase = container.resolve(EnviarLinkSigaUseCase);
@@ -22,7 +21,6 @@ class EnviarLinkSigaController {
       codigoNota,
       tipoSolicitacao,
       link,
-      tipoMensagem: tipoMensagem.toUpperCase(),
     });
 
     return response.status(201).send();

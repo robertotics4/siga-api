@@ -7,7 +7,6 @@ interface IMensagensRepository {
     contaContrato,
     codigoNota,
     link,
-    tipoMensagem,
   }: IEnviarLinkSigaDTO): Promise<void>;
 }
 
