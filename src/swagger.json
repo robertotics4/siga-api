@@ -147,10 +147,8 @@
                     "message": {
                       "type": "array",
                       "items": {
-                        "items": {
-                          "type": "string",
-                          "example": "empresaOperadora is not allowed to be empty"
-                        }
+                        "type": "string",
+                        "example": "empresaOperadora is not allowed to be empty"
                       }
                     }
                   }
@@ -181,98 +179,44 @@
         }
       }
     },
-    "/mensagens": {
+    "/mensagens/iniciar": {
       "post": {
         "tags": ["Mensagem"],
-        "summary": "Gravar log de mensagem",
-        "description": "Gravar log de mensagem enviada pela Clara no EQTLINFO",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "empresaOperadora",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "enum": [
-                82,
-                86,
-                95,
-                98
-              ],
-              "example": 98
-            }
-          }
-        ],
+        "summary": "Enviar Link SIGA",
+        "description": "Enviar link de acompanhamento para o cliente final",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "canal": {
+                  "empresaOperadora": {
                     "type": "string",
                     "required": true,
-                    "example": "whatsapp"
-                  },
-                  "sessao": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "telefone": {
-                    "type": "string",
-                    "required": true,
-                    "example": "9888888888"
-                  },
-                  "dataEnvio": {
-                    "type": "string",
-                    "required": true,
-                    "format": "date-time"
-                  },
-                  "idEnvio": {
-                    "type": "string",
-                    "required": true,
-                    "format": "uuid"
-                  },
-                  "mensagemEnviada": {
-                    "type": "string",
-                    "required": true,
-                    "example": "Mensagem de texto"
-                  },
-                  "tipoSolicitacao": {
-                    "type": "string",
-                    "example": "REJEICAO_LIGACAO_NOVA"
-                  },
-                  "codigoServico": {
-                    "type": "string",
-                    "example": "8023130941"
-                  },
-                  "codigoNota": {
-                    "type": "string",
-                    "example": "001234567898"
+                    "enum": ["82", "86", "95", "98"],
+                    "example": "98"
                   },
                   "contaContrato": {
                     "type": "string",
                     "required": true,
+                    "maxLength": 12,
+                    "example": "000000002828"
+                  },
+                  "codigoNota": {
+                    "type": "string",
+                    "required": true,
+                    "maxLength": 12,
                     "example": "000012345678"
                   },
-                  "status": {
+                  "tipoSolicitacao": {
                     "type": "string",
-                    "example": "IMPROCEDENTE"
+                    "required": true,
+                    "example": "Falta de energia"
                   },
-                  "categoria": {
+                  "link": {
                     "type": "string",
-                    "example": "PUSH",
-                    "enum": ["PUSH", "PUSH - ATIVO", "SERVICO", "SERVICO - ATIVO"]
-                  },
-                  "usuario": {
-                    "type": "string",
-                    "example": "SROBOTIZACAO"
-                  },
-                  "dataNota": {
-                    "type": "string",
-                    "format": "date",
-                    "pattern": "/([0-9]{2})\/(?:[0-9]{2})\/([0-9]{4})/",
-                    "example": "13/08/2021"
+                    "required": true,
+                    "example": "http://www.equatorial.com.br/acompanhamento/Kjskwpjdsdf12"
                   }
                 }
               }
@@ -281,20 +225,7 @@
         },
         "responses": {
           "201": {
-            "description": "Sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Log registrado com sucesso"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Sucesso"
           },
           "400": {
             "description": "Requisição Inválida",
@@ -303,41 +234,15 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "statusCode": {
-                      "type": "number",
-                      "example": 400
-                    },
-                    "error": {
+                    "status": {
                       "type": "string",
-                      "example": "Bad Request"
+                      "example": "Validation error"
                     },
                     "message": {
-                      "type": "string",
-                      "example": "Validation failed"
-                    },
-                    "validation": {
-                      "type": "object",
-                      "properties": {
-                        "query": {
-                          "type": "object",
-                          "properties": {
-                            "source": {
-                              "type": "string",
-                              "example": "query"
-                            },
-                            "keys": {
-                              "type": "array",
-                              "items": {
-                                "type": "string",
-                                "example": "empresaOperadora"
-                              }
-                            },
-                            "message": {
-                              "type": "string",
-                              "example": "\"empresaOperadora\" must be one of [82, 86, 95, 98]"
-                            }
-                          }
-                        }
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "empresaOperadora is not allowed to be empty"
                       }
                     }
                   }
