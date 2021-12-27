@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Clara Mensagens/Solicitações - Documentação",
+    "title": "SIGA API Mensageria - Documentação",
     "description": "API auxiliar para o projeto SIGA",
     "version": "1.0.0",
     "contact": {
@@ -140,40 +140,16 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "statusCode": {
-                      "type": "number",
-                      "example": 400
-                    },
-                    "error": {
+                    "status": {
                       "type": "string",
-                      "example": "Bad Request"
+                      "example": "Validation error"
                     },
                     "message": {
-                      "type": "string",
-                      "example": "Validation failed"
-                    },
-                    "validation": {
-                      "type": "object",
-                      "properties": {
-                        "query": {
-                          "type": "object",
-                          "properties": {
-                            "source": {
-                              "type": "string",
-                              "example": "query"
-                            },
-                            "keys": {
-                              "type": "array",
-                              "items": {
-                                "type": "string",
-                                "example": "empresaOperadora"
-                              }
-                            },
-                            "message": {
-                              "type": "string",
-                              "example": "\"empresaOperadora\" must be one of [82, 86, 95, 98]"
-                            }
-                          }
+                      "type": "array",
+                      "items": {
+                        "items": {
+                          "type": "string",
+                          "example": "empresaOperadora is not allowed to be empty"
                         }
                       }
                     }
