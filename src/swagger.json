@@ -179,6 +179,244 @@
         }
       }
     },
+    "/clientes/cadastro": {
+      "get": {
+        "tags": [
+          "Cliente"
+        ],
+        "summary": "Buscar clientes - Cadastro",
+        "description": "Buscar clientes da base de cadastros",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "empresaOperadora",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "enum": [
+                82,
+                86,
+                95,
+                98
+              ],
+              "example": 98
+            }
+          },
+          {
+            "in": "query",
+            "name": "contaContrato",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 12,
+              "example": "000000002828"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contaContrato": {
+                      "type": "string",
+                      "example": "000000002828"
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "johndoe@email.com"
+                    },
+                    "telefoneFixo": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "98999999999"
+                      }
+                    },
+                    "telefoneMovel": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "98999999999"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição Inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Validation error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "empresaOperadora is not allowed to be empty"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clientes/api": {
+      "get": {
+        "tags": [
+          "Cliente"
+        ],
+        "summary": "Buscar clientes - API",
+        "description": "Buscar clientes na API de clientes",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "empresaOperadora",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "enum": [
+                82,
+                86,
+                95,
+                98
+              ],
+              "example": 98
+            }
+          },
+          {
+            "in": "query",
+            "name": "contaContrato",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 12,
+              "example": "000000002828"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contaContrato": {
+                      "type": "string",
+                      "example": "000000002828"
+                    },
+                    "nome": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "johndoe@email.com"
+                    },
+                    "telefoneFixo": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "98999999999"
+                      }
+                    },
+                    "telefoneMovel": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "98999999999"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição Inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Validation error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "empresaOperadora is not allowed to be empty"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/mensagens/iniciar": {
       "post": {
         "tags": ["Mensagem"],
