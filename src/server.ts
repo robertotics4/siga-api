@@ -24,7 +24,7 @@ app.use(
 
 app.get('/', (request, response) => {
   return response.json({
-    apiName: 'Clara Solicitações e Mensagens',
+    apiName: 'SIGA API - Mensageria',
     version: '1.0.0',
   });
 });

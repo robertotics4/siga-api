@@ -121,7 +121,7 @@ class EnviarLinkSigaUseCase {
 
     await this.mensagensRepository.enviarLinkSiga({
       empresaOperadora,
-      telefone: '9882045774',
+      telefone: '9884299595',
       // telefone: telefonesParaEnvio.principal,
       contaContrato,
       codigoNota,
