@@ -1,4 +1,4 @@
-import { getHours } from 'date-fns';
+import { getHours, startOfHour } from 'date-fns';
 
 import AppError from '../errors/AppError';
 
@@ -20,7 +20,9 @@ function isWithinOfficeHours(): boolean {
     throw new AppError('Hora inicio/fim de atendimento inválidos');
   }
 
-  const now = new Date();
+  const now = startOfHour(Date.now());
+
+  console.log({ horaDoDia: getHours(now) });
 
   if (
     getHours(now) < horaInicioAtendimento ||
