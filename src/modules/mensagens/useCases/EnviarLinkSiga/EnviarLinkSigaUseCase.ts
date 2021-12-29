@@ -15,7 +15,7 @@ interface IRequest {
   empresaOperadora: number;
   contaContrato: string;
   codigoNota: string;
-  tipoSolicitacao: string;
+  tipoSolicitacao?: string;
   link: string;
 }
 
@@ -121,7 +121,8 @@ class EnviarLinkSigaUseCase {
 
     await this.mensagensRepository.enviarLinkSiga({
       empresaOperadora,
-      telefone: '9884299595',
+      telefone: '9882045774',
+      // telefone: '9884299595',
       // telefone: telefonesParaEnvio.principal,
       contaContrato,
       codigoNota,

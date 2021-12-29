@@ -3,7 +3,7 @@ interface IEnviarLinkSigaDTO {
   telefone: string;
   contaContrato: string;
   codigoNota: string;
-  tipoSolicitacao: string;
+  tipoSolicitacao?: string;
   link: string;
   idSessaoAtiva?: string;
 }

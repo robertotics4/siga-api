@@ -33,7 +33,7 @@ class MensagensRepository implements IMensagensRepository {
           {
             phone: `+55${telefone}`,
             params: {
-              servico: tipoSolicitacao,
+              servico: tipoSolicitacao || 'energia',
               link,
             },
           },
@@ -48,7 +48,7 @@ class MensagensRepository implements IMensagensRepository {
           type: 'text',
           text: {
             body: prepararMensagemSiga(
-              tipoSolicitacao,
+              tipoSolicitacao || 'energia',
               codigoNota,
               'INICIAR',
               link,

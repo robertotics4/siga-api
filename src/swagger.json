@@ -448,7 +448,7 @@
                   },
                   "tipoSolicitacao": {
                     "type": "string",
-                    "required": true,
+                    "required": false,
                     "example": "Falta de energia"
                   },
                   "link": {

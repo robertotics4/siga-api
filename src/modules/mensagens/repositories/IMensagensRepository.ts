@@ -6,7 +6,9 @@ interface IMensagensRepository {
     telefone,
     contaContrato,
     codigoNota,
+    tipoSolicitacao,
     link,
+    idSessaoAtiva,
   }: IEnviarLinkSigaDTO): Promise<void>;
 }
 
