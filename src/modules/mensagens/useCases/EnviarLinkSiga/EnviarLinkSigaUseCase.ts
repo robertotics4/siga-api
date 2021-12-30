@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 
 import AppError from '../../../../errors/AppError';
+import getRandomInt from '../../../../util/getRandomInt';
 import isWithinOfficeHours from '../../../../util/isWithinOfficeHours';
 import prepararMensagemSiga from '../../../../util/prepararMensagemSiga';
 import verificarTelefoneMaisUsado from '../../../../util/verficiarTelefoneMaisUsado';
@@ -119,17 +120,31 @@ class EnviarLinkSigaUseCase {
         ? solicitacaoEncontrada.sessao
         : undefined;
 
+    // Números utilizados durante a fase de testes
+    const telefonesTeste = ['9882045774', '9884299595', '9899338173'];
+    // Captura um índice randômico na lista de números de teste
+    const indiceRandomico = getRandomInt(0, telefonesTeste.length);
+
+    // Envia a mensagem para o número de teste selecionado
     await this.mensagensRepository.enviarLinkSiga({
       empresaOperadora,
-      telefone: '9882045774',
-      // telefone: '9884299595',
-      // telefone: telefonesParaEnvio.principal,
+      telefone: telefonesTeste[indiceRandomico],
       contaContrato,
       codigoNota,
       tipoSolicitacao,
       link,
       idSessaoAtiva,
     });
+
+    // await this.mensagensRepository.enviarLinkSiga({
+    //   empresaOperadora,
+    //   telefone: telefonesParaEnvio.principal,
+    //   contaContrato,
+    //   codigoNota,
+    //   tipoSolicitacao,
+    //   link,
+    //   idSessaoAtiva,
+    // });
 
     const mensagemEnviada = prepararMensagemSiga(
       tipoSolicitacao,
