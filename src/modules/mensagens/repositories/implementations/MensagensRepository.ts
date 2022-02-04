@@ -26,8 +26,6 @@ class MensagensRepository implements IMensagensRepository {
     const { id, outgoingToken } = getRequestYaloInfo(empresaOperadora);
     const messageTemplate = messageTemplates.INICIAR;
 
-    console.log({ idSessaoAtiva });
-
     if (!idSessaoAtiva) {
       await apiYaloNotification.post(`/${id}/notifications`, {
         type: messageTemplate,

@@ -25,6 +25,11 @@ interface ITelefonesParaEnvio {
   secundario?: string;
 }
 
+interface IInfoSolicitacoes {
+  solicitacaoEncontrada: any | undefined;
+  idSessaoAtiva: string | null;
+}
+
 @injectable()
 class EnviarLinkSigaUseCase {
   constructor(
@@ -52,6 +57,7 @@ class EnviarLinkSigaUseCase {
     link,
   }: IRequest): Promise<void> {
     const telefonesParaEnvio: ITelefonesParaEnvio = {} as ITelefonesParaEnvio;
+    const infoSolicitacoes: IInfoSolicitacoes = {} as IInfoSolicitacoes;
 
     if (!isWithinOfficeHours()) {
       throw new AppError('Serviço indisponível neste horário');
@@ -94,36 +100,48 @@ class EnviarLinkSigaUseCase {
           secundario: telMovelCadastro[1] || undefined,
         });
       }
-    }
-
-    // Se existirem solicitações, filtrar pelo código da nota
-    const solicitacaoEncontrada = solicitacoes.filter(
-      solicitacao => solicitacao.codigoNota === codigoNota,
-    )[0];
-
-    if (solicitacaoEncontrada) {
-      Object.assign(telefonesParaEnvio, {
-        principal: solicitacaoEncontrada.telefone,
-      });
     } else {
-      // Se não encontrar uma solicitação baseada no código da nota, verificar o telefone mais utilizado
-      const telefoneMaisUsado = verificarTelefoneMaisUsado(solicitacoes);
+      // Se existirem solicitações, filtrar pelo código da nota
+      const solicitacaoEncontrada = solicitacoes.filter(
+        solicitacao => solicitacao.codigoNota === codigoNota,
+      )[0];
 
-      Object.assign(telefonesParaEnvio, {
-        principal: telefoneMaisUsado,
-      });
+      if (solicitacaoEncontrada) {
+        Object.assign(infoSolicitacoes, {
+          ...infoSolicitacoes,
+          solicitacaoEncontrada,
+        });
+
+        Object.assign(telefonesParaEnvio, {
+          principal: solicitacaoEncontrada.telefone,
+        });
+      } else {
+        // Se não encontrar uma solicitação baseada no código da nota, verificar o telefone mais utilizado
+        const telefoneMaisUsado = verificarTelefoneMaisUsado(solicitacoes);
+
+        Object.assign(telefonesParaEnvio, {
+          principal: telefoneMaisUsado,
+        });
+      }
+
+      // Verifica se existe uma sessão ativa com o cliente
+      if (solicitacaoEncontrada && solicitacaoEncontrada.sessaoAtiva) {
+        Object.assign(infoSolicitacoes, {
+          ...infoSolicitacoes,
+          idSessaoAtiva: solicitacaoEncontrada.sessao,
+        });
+      }
     }
-
-    // Verifica se existe uma sessão ativa com o cliente
-    const idSessaoAtiva =
-      solicitacaoEncontrada && solicitacaoEncontrada.sessaoAtiva
-        ? solicitacaoEncontrada.sessao
-        : undefined;
 
     // Números utilizados durante a fase de testes
-    const telefonesTeste = ['9882045774', '9884299595', '9899338173'];
+    const telefonesTeste = ['9882045774'];
     // Captura um índice randômico na lista de números de teste
     const indiceRandomico = getRandomInt(0, telefonesTeste.length);
+
+    console.log({
+      telefoneTeste: telefonesTeste[indiceRandomico],
+      telefoneUsuario: telefonesParaEnvio.principal,
+    });
 
     // Envia a mensagem para o número de teste selecionado
     await this.mensagensRepository.enviarLinkSiga({
@@ -133,7 +151,7 @@ class EnviarLinkSigaUseCase {
       codigoNota,
       tipoSolicitacao,
       link,
-      idSessaoAtiva,
+      idSessaoAtiva: infoSolicitacoes.idSessaoAtiva,
     });
 
     // await this.mensagensRepository.enviarLinkSiga({
@@ -156,21 +174,21 @@ class EnviarLinkSigaUseCase {
     await this.logsMensagensRepository.gravarLogMensagem({
       empresaOperadora,
       canal: 'whatsapp',
-      sessao: idSessaoAtiva || undefined,
+      sessao: infoSolicitacoes.idSessaoAtiva,
       telefone: telefonesParaEnvio.principal,
       dataEnvio: new Date(),
       idEnvio: uuidv4(),
       mensagemEnviada,
       tipoSolicitacao: `SIGA_INICIAR`,
-      codigoServico: solicitacaoEncontrada
-        ? solicitacaoEncontrada.codigoServico
+      codigoServico: infoSolicitacoes.solicitacaoEncontrada
+        ? infoSolicitacoes.solicitacaoEncontrada.codigoServico
         : undefined,
       codigoNota,
       contaContrato,
-      categoria: idSessaoAtiva ? 'PUSH' : 'PUSH - ATIVO',
+      categoria: infoSolicitacoes.idSessaoAtiva ? 'PUSH' : 'PUSH - ATIVO',
       usuario: 'teste', // HARD CODDED
-      dataNota: solicitacaoEncontrada
-        ? solicitacaoEncontrada.dataSolicitacao
+      dataNota: infoSolicitacoes.solicitacaoEncontrada
+        ? infoSolicitacoes.solicitacaoEncontrada.dataSolicitacao
         : undefined,
     });
   }
