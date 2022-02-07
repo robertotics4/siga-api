@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import AppError from '../../../../errors/AppError';
 import getRandomInt from '../../../../util/getRandomInt';
+import { getTelefonesTeste } from '../../../../util/getTelefonesTeste';
 import isWithinOfficeHours from '../../../../util/isWithinOfficeHours';
 import prepararMensagemSiga from '../../../../util/prepararMensagemSiga';
 import verificarTelefoneMaisUsado from '../../../../util/verficiarTelefoneMaisUsado';
@@ -134,35 +135,36 @@ class EnviarLinkSigaUseCase {
     }
 
     // Números utilizados durante a fase de testes
-    const telefonesTeste = ['9882045774'];
-    // Captura um índice randômico na lista de números de teste
-    const indiceRandomico = getRandomInt(0, telefonesTeste.length);
+    if (process.env.TELEFONES_TESTE) {
+      const telefonesTeste = getTelefonesTeste();
+      const indiceRandomico = getRandomInt(0, telefonesTeste.length);
 
-    console.log({
-      telefoneTeste: telefonesTeste[indiceRandomico],
-      telefoneUsuario: telefonesParaEnvio.principal,
-    });
+      console.log({
+        telefoneTeste: telefonesTeste[indiceRandomico],
+        telefoneUsuario: telefonesParaEnvio.principal,
+      });
 
-    // Envia a mensagem para o número de teste selecionado
-    await this.mensagensRepository.enviarLinkSiga({
-      empresaOperadora,
-      telefone: telefonesTeste[indiceRandomico],
-      contaContrato,
-      codigoNota,
-      tipoSolicitacao,
-      link,
-      idSessaoAtiva: infoSolicitacoes.idSessaoAtiva,
-    });
-
-    // await this.mensagensRepository.enviarLinkSiga({
-    //   empresaOperadora,
-    //   telefone: telefonesParaEnvio.principal,
-    //   contaContrato,
-    //   codigoNota,
-    //   tipoSolicitacao,
-    //   link,
-    //   idSessaoAtiva,
-    // });
+      // Envia a mensagem para o número de teste selecionado
+      await this.mensagensRepository.enviarLinkSiga({
+        empresaOperadora,
+        telefone: telefonesTeste[indiceRandomico],
+        contaContrato,
+        codigoNota,
+        tipoSolicitacao,
+        link,
+        idSessaoAtiva: infoSolicitacoes.idSessaoAtiva,
+      });
+    } else {
+      // await this.mensagensRepository.enviarLinkSiga({
+      //   empresaOperadora,
+      //   telefone: telefonesParaEnvio.principal,
+      //   contaContrato,
+      //   codigoNota,
+      //   tipoSolicitacao,
+      //   link,
+      //   idSessaoAtiva: infoSolicitacoes.idSessaoAtiva,
+      // });
+    }
 
     const mensagemEnviada = prepararMensagemSiga(
       tipoSolicitacao,
