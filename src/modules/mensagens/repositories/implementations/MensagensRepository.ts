@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import apiYaloNotification from '../../../../services/apiYaloNotification';
 import apiYaloOutgoing from '../../../../services/apiYaloOutgoing';
 import getRequestYaloInfo from '../../../../util/getRequestYaloInfo';
+import { getTipoSolicitacaoCompleto } from '../../../../util/getTipoSolicitacaoCompleto';
 import prepararMensagemSiga from '../../../../util/prepararMensagemSiga';
 import IEnviarLinkSigaDTO from '../../dtos/IEnviarLinkSigaDTO';
 import IMensagensRepository from '../IMensagensRepository';
@@ -25,6 +26,7 @@ class MensagensRepository implements IMensagensRepository {
   }: IEnviarLinkSigaDTO): Promise<void> {
     const { id, outgoingToken } = getRequestYaloInfo(empresaOperadora);
     const messageTemplate = messageTemplates.INICIAR;
+    const tipoSolicitacaoCompleto = getTipoSolicitacaoCompleto(tipoSolicitacao);
 
     if (!idSessaoAtiva) {
       await apiYaloNotification.post(`/${id}/notifications`, {
@@ -33,7 +35,7 @@ class MensagensRepository implements IMensagensRepository {
           {
             phone: `+55${telefone}`,
             params: {
-              servico: tipoSolicitacao || 'energia',
+              servico: tipoSolicitacaoCompleto || 'energia',
               link,
             },
           },
