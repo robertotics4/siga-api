@@ -76,7 +76,6 @@ logsRotas.get(
         .pattern(new RegExp(/^[0-9.]+$/))
         .max(12),
       telefone: Joi.string()
-        .required()
         .pattern(new RegExp(/^[0-9.]+$/))
         .min(10)
         .max(11),

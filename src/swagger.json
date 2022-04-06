@@ -510,6 +510,183 @@
           }
         }
       }
+    },
+    "/logs": {
+      "get": {
+        "tags": [
+          "Log"
+        ],
+        "summary": "Buscar logs",
+        "description": "Buscar logs da base de dados",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "empresaOperadora",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "enum": [
+                82,
+                86,
+                95,
+                98
+              ],
+              "example": 98
+            }
+          },
+          {
+            "in": "query",
+            "name": "contaContrato",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 12,
+              "example": "000000002828"
+            }
+          },
+          {
+            "in": "query",
+            "name": "codigoNota",
+            "schema": {
+              "type": "string",
+              "maxLength": 12,
+              "example": "001234567898"
+            }
+          },
+          {
+            "in": "query",
+            "name": "telefone",
+            "schema": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 11,
+              "example": "9899999999"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "EMPRESA": {
+                            "type": "string",
+                            "example": "CEMAR"
+                          },
+                          "canal": {
+                            "type": "string",
+                            "format": "whatsapp"
+                          },
+                          "SESSAO": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "TELEFONE": {
+                            "type": "string",
+                            "example": "9888888888"
+                          },
+                          "DT_ENVIO_MSG": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "ID_ENVIO": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "MENSAGEM_ENVIADA": {
+                            "type": "string",
+                            "example": "Mensagem teste"
+                          },
+                          "TIPO_SOLICITACAO": {
+                            "type": "string",
+                            "example": "Cadastro Baixa Renda"
+                          },
+                          "CODIGO_SR": {
+                            "type": "string",
+                            "example": "0000123456"
+                          },
+                          "CODIGO_NOTA": {
+                            "type": "string",
+                            "example": "000012345678"
+                          },
+                          "CONTA_CONTRATO": {
+                            "type": "string",
+                            "example": "000012345678"
+                          },
+                          "STATUS": {
+                            "type": "string",
+                            "example": "IMPROCEDENTE"
+                          },
+                          "CATEGORIA_MSG": {
+                            "type": "string",
+                            "example": "SERVICO - ATIVO"
+                          },
+                          "USUARIO": {
+                            "type": "string",
+                            "example": "sdigital"
+                          },
+                          "DATA_NOTA": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição Inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Validation error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "empresaOperadora is not allowed to be empty"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
