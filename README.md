@@ -19,14 +19,14 @@
     <br> 
 </p>
 
-## 📝 Table of Contents
+## 📝 Índice
 
 - [Sobre a aplicação](#sobre)
 - [Por onde começar?](#inicio)
 - [Como usar?](#como_usar)
 - [Deployment](#deployment)
 - [Tecnologias utilizadas](#techs)
-- [TODO](../REQUIREMENTS.md)
+- [Requisitos](./REQUIREMENTS.md)
 - [Autores](#autores)
 - [Agradecimentos](#agradecimentos)
 
