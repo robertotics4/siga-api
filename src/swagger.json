@@ -686,6 +686,151 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "Log"
+        ],
+        "summary": "Salvar log",
+        "description": "Persistir log na base de dados",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "empresaOperadora": {
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                      "82",
+                      "86",
+                      "95",
+                      "98"
+                    ],
+                    "example": "98"
+                  },
+                  "canal": {
+                    "type": "string",
+                    "required": true,
+                    "example": "whatsapp"
+                  },
+                  "sessao": {
+                    "type": "string",
+                    "example": "uuid"
+                  },
+                  "telefone": {
+                    "type": "array",
+                    "required": true,
+                    "example": "98999999999"
+                  },
+                  "dataEnvio": {
+                    "type": "string",
+                    "required": true,
+                    "format": "date-time",
+                    "example": "10/12/2021"
+                  },
+                  "idEnvio": {
+                    "type": "string",
+                    "required": true,
+                    "example": "uuid"
+                  },
+                  "mensagemEnviada": {
+                    "type": "string",
+                    "required": true,
+                    "example": "Mensagem de teste"
+                  },
+                  "tipoSolicitacao": {
+                    "type": "string",
+                    "example": "Cadastro Baixa Renda"
+                  },
+                  "codigoServico": {
+                    "type": "string",
+                    "maxLength": 10,
+                    "example": "0000001234"
+                  },
+                  "codigoNota": {
+                    "type": "string",
+                    "maxLength": 12,
+                    "example": "000012345678"
+                  },
+                  "contaContrato": {
+                    "type": "string",
+                    "required": true,
+                    "maxLength": 12,
+                    "example": "000000002828"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "PROCEDENTE"
+                  },
+                  "categoria": {
+                    "type": "string",
+                    "required": true,
+                    "example": "PUSH"
+                  },
+                  "usuario": {
+                    "type": "string",
+                    "example": "sdigital"
+                  },
+                  "dataNota": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "10/10/2021 21:02:45"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sucesso"
+          },
+          "400": {
+            "description": "Requisição Inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Validation error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "empresaOperadora is not allowed to be empty"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

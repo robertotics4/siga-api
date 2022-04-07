@@ -33,8 +33,8 @@ logsRotas.post(
         .messages({
           'string.pattern.base': 'dataEnvio inválida (ex: DD/MM/YYYY HH:MI:SS)',
         }),
-      idEnvio: Joi.string(),
-      mensagemEnviada: Joi.string(),
+      idEnvio: Joi.string().required(),
+      mensagemEnviada: Joi.string().required(),
       tipoSolicitacao: Joi.string().required(),
       codigoServico: Joi.string(),
       codigoNota: Joi.string()
