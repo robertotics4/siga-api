@@ -1,10 +1,10 @@
 const knexConfig = {
-  client: 'oracledb',
+  client: '',
   connection: {
-    host: '10.6.3.53',
-    database: 'eqtlinfo',
-    user: 'SROBOTIZACAO01',
-    password: 'IZtV1JnlEgZI',
+    host: '',
+    database: '',
+    user: '',
+    password: '',
   },
 };
 

@@ -65,12 +65,13 @@ Recomendamos a utilização do yarn por questões de performance.
 ## 🎈 Como usar? <a name="como_usar"></a>
 
 1. Crie o arquivo `.env` na raiz do projeto. Existe um `.env.example` com instruções para as informações que deversão ser preenchidas;
-2. Execute o script `dev` para executar a aplicação no ambiente de desenvolvimento. Exemplo:
+2. Preencha os campos do arquivo **knexfile.ts** que está na raiz do projeto.
+3. Execute o script `dev` para executar a aplicação no ambiente de desenvolvimento. Exemplo:
 
 ```
 yarn dev
 ```
-3. Para ver a documentação no Swagger acesse `http://localhost:{API_PORT}/docs`. 
+4. Para ver a documentação no Swagger acesse `http://localhost:{API_PORT}/docs`. 
 
 ## 🚀 Deployment <a name = "deployment"></a>
 
